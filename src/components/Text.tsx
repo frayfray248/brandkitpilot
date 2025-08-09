@@ -17,15 +17,27 @@ const text = tv({
       '4xl': 'text-4xl',
     },
     color: {
-      base: 'text-base-content',
+      'base-100': 'text-base-100',
+      'base-200': 'text-base-200',
+      'base-300': 'text-base-300',
+      surface: 'text-surface',
+      'base-content': 'text-base-content',
       primary: 'text-primary',
+      'primary-content': 'text-primary-content',
       secondary: 'text-secondary',
+      'secondary-content': 'text-secondary-content',
       accent: 'text-accent',
+      'accent-content': 'text-accent-content',
       neutral: 'text-neutral',
+      'neutral-content': 'text-neutral-content',
       info: 'text-info',
+      'info-content': 'text-info-content',
       success: 'text-success',
+      'success-content': 'text-success-content',
       warning: 'text-warning',
+      'warning-content': 'text-warning-content',
       error: 'text-error',
+      'error-content': 'text-error-content',
     },
     bold: {
       true: 'font-bold',
@@ -33,7 +45,7 @@ const text = tv({
   },
   defaultVariants: {
     size: 'md',
-    color: 'base',
+    color: 'base-content',
   },
 });
 
