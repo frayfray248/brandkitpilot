@@ -1,7 +1,6 @@
 'use client';
 
 import type {
-    HTMLInputTypeAttribute,
     InputHTMLAttributes,
     TextareaHTMLAttributes,
 } from 'react';
@@ -38,10 +37,19 @@ const input = tv({
 
 export type InputVariants = VariantProps<typeof input>;
 
-type AllowedInputTypes = Exclude<
-    HTMLInputTypeAttribute,
-    'checkbox' | 'radio' | 'file' | 'range'
->;
+type AllowedInputTypes =
+    | 'number'
+    | 'search'
+    | 'date'
+    | 'datetime-local'
+    | 'email'
+    | 'month'
+    | 'password'
+    | 'tel'
+    | 'text'
+    | 'time'
+    | 'url'
+    | 'week';
 
 type BaseProps = InputVariants & {
     className?: string;
