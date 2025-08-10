@@ -1,10 +1,11 @@
 'use client';
 
+import Text, { TextVariants } from '@/components/Text';
 import type { InputHTMLAttributes } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 const checkbox = tv({
-    base: 'rounded border border-base-300 bg-base-100 text-base-content focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-base-100 disabled:opacity-50 disabled:cursor-not-allowed',
+    base: 'peer appearance-none rounded border bg-base-100 text-base-content disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer',
     variants: {
         size: {
             sm: 'w-4 h-4',
@@ -12,34 +13,72 @@ const checkbox = tv({
             lg: 'w-6 h-6',
         },
         color: {
-            base: 'accent-base-300',
-            primary: 'accent-primary',
-            secondary: 'accent-secondary',
-            accent: 'accent-accent',
-            neutral: 'accent-neutral',
-            info: 'accent-info',
-            success: 'accent-success',
-            warning: 'accent-warning',
-            error: 'accent-error',
+            base: 'border-base-300 checked:bg-base-200',
+            primary: 'border-primary checked:bg-primary',
+            secondary: 'border-secondary checked:bg-secondary',
+            accent: 'border-accent checked:bg-accent',
+            neutral: 'border-neutral checked:bg-neutral',
+            info: 'border-info checked:bg-info',
+            success: 'border-success checked:bg-success',
+            warning: 'border-warning checked:bg-warning',
+            error: 'border-error checked:bg-error',
         },
     },
     defaultVariants: {
         size: 'md',
-        color: 'base',
+        color: 'neutral',
     },
 });
 
 export type CheckBoxVariants = VariantProps<typeof checkbox>;
 
-export type CheckBoxProps = InputHTMLAttributes<HTMLInputElement> & CheckBoxVariants;
+type OmitHTMLInputSize = Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>;
+export type CheckBoxProps = OmitHTMLInputSize & CheckBoxVariants & {
+    children?: React.ReactNode;
+    text?: string;
+}
 
-export default function CheckBox({ className, size, color, ...props }: CheckBoxProps) {
+export default function CheckBox({ className, size, color, children, text, ...props }: CheckBoxProps) {
+
+    const textSize: Record<'sm' | 'md' | 'lg', TextVariants['size']> = {
+        sm: 'xs',
+        md: 'md',
+        lg: 'lg',
+    };
+
     return (
-        <input
-            type="checkbox"
-            className={checkbox({ size, color, className })}
-            {...props}
-        />
+        <label className='flex items-center space-x-2'>
+            <span className="relative inline-flex w-min">
+                <input
+                    type="checkbox"
+                    className={checkbox({ size, color, className })}
+                    {...props}
+                />
+                {/* Checkmark */}
+                <span
+                    className={`
+                        pointer-events-none absolute
+                        hidden peer-checked:inline-block
+                        w-full h-full
+                    `}
+                >
+                    <svg
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        stroke="white"
+                        strokeWidth="2"
+                        strokeLinecap="square"
+                        strokeLinejoin="miter"
+                        className="w-full h-full"
+                    >
+                        <polyline points="4,10 6,12 12,6" />
+                    </svg>
+                </span>
+            </span>
+
+            {children && <span>{children}</span>}
+            {text && <Text size={textSize[size || 'md']} >{text}</Text>}
+        </label>
     );
 }
 
