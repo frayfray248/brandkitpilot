@@ -1,6 +1,4 @@
-'use client';
-
-import Text, { TextVariants } from '@/components/Text';
+import Text, { TextVariants } from '@/components/Text/Text';
 import type { InputHTMLAttributes } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
