@@ -6,7 +6,7 @@ import Text from '../Text/Text';
 const meta: Meta<typeof Box> = {
     component: Box,
     args: {
-        children: <Text>Content</Text>,
+        children: [<Text key='content'>Content</Text>],
     },
     argTypes: {
         padding: {
