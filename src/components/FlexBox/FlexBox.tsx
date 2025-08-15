@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef, ElementType } from 'react';
+import type { ComponentPropsWithRef, ElementType } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 const flexBox = tv({
@@ -61,7 +61,7 @@ export type FlexBoxVariants = VariantProps<typeof flexBox>;
 export type FlexBoxProps<T extends ElementType = 'div'> = {
     as?: T;
 } & FlexBoxVariants &
-    Omit<ComponentPropsWithoutRef<T>, keyof FlexBoxVariants | 'as'>;
+    Omit<ComponentPropsWithRef<T>, keyof FlexBoxVariants | 'as'>;
 
 export default function FlexBox<T extends ElementType = 'div'>({
     as,

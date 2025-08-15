@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef, ElementType } from 'react';
+import type { ComponentPropsWithRef, ElementType } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 const text = tv({
@@ -57,7 +57,7 @@ export type TextVariants = VariantProps<typeof text>;
 export type TextProps<T extends ElementType = 'p'> = {
     as?: T;
 } & TextVariants &
-    Omit<ComponentPropsWithoutRef<T>, keyof TextVariants | 'as'>;
+    Omit<ComponentPropsWithRef<T>, keyof TextVariants | 'as'>;
 
 export default function Text<T extends ElementType = 'p'>({
     as,

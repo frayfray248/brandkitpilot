@@ -1,5 +1,5 @@
 import Text, { TextVariants } from '@/components/Text/Text';
-import type { InputHTMLAttributes } from 'react';
+import type { ComponentPropsWithRef } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 const radio = tv({
@@ -30,7 +30,7 @@ const radio = tv({
 
 export type RadioVariants = VariantProps<typeof radio>;
 
-type OmitHTMLInputSize = Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>;
+type OmitHTMLInputSize = Omit<ComponentPropsWithRef<'input'>, 'size'>;
 export type RadioProps = OmitHTMLInputSize & RadioVariants & {
     children?: React.ReactNode;
     text?: string;

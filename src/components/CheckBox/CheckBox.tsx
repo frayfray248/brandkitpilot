@@ -1,5 +1,5 @@
 import Text, { TextVariants } from '@/components/Text/Text';
-import type { InputHTMLAttributes } from 'react';
+import type { ComponentPropsWithRef } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 const checkbox = tv({
@@ -30,7 +30,8 @@ const checkbox = tv({
 
 export type CheckBoxVariants = VariantProps<typeof checkbox>;
 
-type OmitHTMLInputSize = Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>;
+type OmitHTMLInputSize = Omit<ComponentPropsWithRef<'input'>, 'size'>;
+
 export type CheckBoxProps = OmitHTMLInputSize & CheckBoxVariants & {
     children?: React.ReactNode;
     text?: string;

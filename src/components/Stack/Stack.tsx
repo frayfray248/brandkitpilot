@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react';
-import FlexBox, { type FlexBoxVariants } from '../FlexBox/FlexBox';
+import FlexBox, { FlexBoxProps, type FlexBoxVariants } from '../FlexBox/FlexBox';
 
 export type StackProps = {
     direction?: FlexBoxVariants['direction'];
     gap?: FlexBoxVariants['gap'];
     className?: string;
     children?: ReactNode;
+    ref?: FlexBoxProps['ref'];
 };
 
 export default function Stack({
@@ -13,9 +14,10 @@ export default function Stack({
     gap = '0',
     className,
     children,
+    ref,
 }: StackProps) {
     return (
-        <FlexBox direction={direction} gap={gap} className={className}>
+        <FlexBox direction={direction} gap={gap} className={className} ref={ref}>
             {children}
         </FlexBox>
     );

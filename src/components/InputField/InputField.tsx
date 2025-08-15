@@ -1,4 +1,5 @@
 import type {
+    ComponentPropsWithRef,
     InputHTMLAttributes,
     TextareaHTMLAttributes,
 } from 'react';
@@ -56,12 +57,12 @@ type BaseProps = InputVariants & {
 export type TextInputProps = {
     type?: AllowedInputTypes;
 } & BaseProps &
-    Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | keyof InputVariants>;
+    Omit<ComponentPropsWithRef<'input'>, 'type' | keyof InputVariants>;
 
 export type TextAreaProps = {
     type: 'textarea';
 } & BaseProps &
-    Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'type' | keyof InputVariants>;
+    Omit<ComponentPropsWithRef<'textarea'>, 'type' | keyof InputVariants>;
 
 export type InputFieldProps = TextInputProps | TextAreaProps;
 
