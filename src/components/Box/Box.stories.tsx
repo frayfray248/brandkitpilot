@@ -43,7 +43,7 @@ export const Default: Story = {
     args: {
         padding: '4',
         margin: '0',
-        bgColor: 'base',
+        bgColor: 'base-100',
     },
 };
 
@@ -62,8 +62,14 @@ export const Colors: Story = {
             <Box padding='4' bgColor='neutral'>
                 <Text color='neutral-content'>Neutral</Text>
             </Box>
-            <Box padding='4' bgColor='base'>
-                <Text>Base</Text>
+            <Box padding='4' bgColor='base-100'>
+                <Text>Base 100</Text>
+            </Box>
+            <Box padding='4' bgColor='base-200'>
+                <Text>Base 200</Text>
+            </Box>
+            <Box padding='4' bgColor='base-300'>
+                <Text>Base 300</Text>
             </Box>
             <Box padding='4' bgColor='info'>
                 <Text color='info-content'>Info</Text>

@@ -35,7 +35,9 @@ const box = tv({
             '24': 'm-24',
         },
         bgColor: {
-            base: 'bg-base-100',
+            "base-100": 'bg-base-100',
+            "base-200": 'bg-base-200',
+            "base-300": 'bg-base-300',
             primary: 'bg-primary',
             secondary: 'bg-secondary',
             accent: 'bg-accent',
@@ -49,7 +51,7 @@ const box = tv({
     defaultVariants: {
         padding: '0',
         margin: '0',
-        bgColor: 'base',
+        bgColor: 'base-100',
     },
 });
 
