@@ -1,25 +1,25 @@
-import type { ReactNode } from 'react';
+import type { ElementType } from 'react';
 import FlexBox, { FlexBoxProps, type FlexBoxVariants } from '../FlexBox/FlexBox';
 
-export type StackProps = {
+export type StackProps<T extends ElementType = 'div'> = {
     direction?: FlexBoxVariants['direction'];
     gap?: FlexBoxVariants['gap'];
-    className?: string;
-    children?: ReactNode;
-    ref?: FlexBoxProps['ref'];
-};
+    wrap?: FlexBoxVariants['wrap'];
+} & Omit<FlexBoxProps<T>, keyof FlexBoxVariants>;
 
-export default function Stack({
+export default function Stack<T extends ElementType = 'div'>({
     direction = 'column',
     gap = '0',
-    className,
-    children,
-    ref,
-}: StackProps) {
-    return (
-        <FlexBox direction={direction} gap={gap} className={className} ref={ref}>
-            {children}
-        </FlexBox>
-    );
+    wrap = 'nowrap',
+    ...props
+}: StackProps<T>) {
+    const flexBoxProps = {
+        ...props,
+        direction,
+        gap,
+        wrap,
+    } as FlexBoxProps<T>;
+
+    return <FlexBox<T> {...flexBoxProps} />;
 }
 
