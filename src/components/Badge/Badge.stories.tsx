@@ -1,6 +1,6 @@
 // eslint-disable-next-line storybook/no-renderer-packages
 import type { Meta, StoryObj } from '@storybook/react';
-import Badge from './Badge';
+import Badge from '@/components/Badge/Badge'
 
 const meta: Meta<typeof Badge> = {
     component: Badge,

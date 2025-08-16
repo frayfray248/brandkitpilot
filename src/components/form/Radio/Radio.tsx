@@ -1,4 +1,4 @@
-import Text, { TextVariants } from '@/components/Text/Text';
+import Text, { TextVariants } from '@/components/typography/Text/Text';
 import type { ComponentPropsWithRef } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 

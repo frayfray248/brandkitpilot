@@ -1,7 +1,7 @@
 // eslint-disable-next-line storybook/no-renderer-packages
 import type { Meta, StoryObj } from '@storybook/react';
 import FlexBox, { FlexBoxProps } from './FlexBox';
-import Text from '../Text/Text';
+import Text from '@/components/typography/Text/Text';
 
 const meta: Meta<typeof FlexBox> = {
     component: FlexBox,

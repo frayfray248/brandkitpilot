@@ -1,6 +1,6 @@
 // eslint-disable-next-line storybook/no-renderer-packages
 import type { Meta, StoryObj } from '@storybook/react';
-import InputField, { InputFieldProps } from './InputField';
+import InputField, { InputFieldProps } from '@/components/form/InputField/InputField';
 
 const meta: Meta<typeof InputField> = {
     component: InputField,

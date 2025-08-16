@@ -1,5 +1,5 @@
 import type { ElementType } from 'react';
-import FlexBox, { FlexBoxProps, type FlexBoxVariants } from '../FlexBox/FlexBox';
+import FlexBox, { FlexBoxProps, type FlexBoxVariants } from '@/components/layout/FlexBox/FlexBox';
 
 export type StackProps<T extends ElementType = 'div'> = {
     direction?: FlexBoxVariants['direction'];

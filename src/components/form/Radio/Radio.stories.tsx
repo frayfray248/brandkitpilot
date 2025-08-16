@@ -1,6 +1,6 @@
 // eslint-disable-next-line storybook/no-renderer-packages
 import type { Meta, StoryObj } from '@storybook/react';
-import Radio from './Radio';
+import Radio from '@/components/form/Radio/Radio';
 
 const meta: Meta<typeof Radio> = {
     component: Radio,

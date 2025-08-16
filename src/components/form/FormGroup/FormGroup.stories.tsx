@@ -1,8 +1,8 @@
 // eslint-disable-next-line storybook/no-renderer-packages
 import type { Meta, StoryObj } from '@storybook/react';
 import FormGroup from './FormGroup';
-import InputField from '@/components/InputField/InputField';
-import CheckBox from '@/components/CheckBox/CheckBox';
+import InputField from '@/components/form/InputField/InputField';
+import CheckBox from '@/components/form/CheckBox/CheckBox';
 import Button from '@/components/Button/Button';
 
 const meta: Meta<typeof FormGroup> = {

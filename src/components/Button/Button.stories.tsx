@@ -1,7 +1,7 @@
 
 // eslint-disable-next-line storybook/no-renderer-packages
 import type { Meta, StoryObj } from '@storybook/react';
-import Button from './Button';
+import Button from '@/components/Button/Button';
 
 const meta: Meta<typeof Button> = {
     component: Button,

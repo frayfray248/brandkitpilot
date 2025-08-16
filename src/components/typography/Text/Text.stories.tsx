@@ -1,6 +1,6 @@
 // eslint-disable-next-line storybook/no-renderer-packages
 import type { Meta, StoryObj } from '@storybook/react';
-import Text, { TextProps } from './Text';
+import Text, { TextProps } from '@/components/typography/Text/Text';
 
 const meta: Meta<typeof Text> = {
     component: Text,

@@ -1,6 +1,6 @@
 // eslint-disable-next-line storybook/no-renderer-packages
 import type { Meta, StoryObj } from '@storybook/react';
-import Heading from './Heading';
+import Heading from '@/components/typography/Heading/Heading';
 
 const meta: Meta<typeof Heading> = {
     component: Heading,

@@ -1,6 +1,6 @@
 'use client';
 
-import Text from '@/components/Text/Text';
+import Text from '@/components/typography/Text/Text';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 const formGroup = tv({

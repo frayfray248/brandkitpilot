@@ -1,7 +1,7 @@
 // eslint-disable-next-line storybook/no-renderer-packages
 import type { Meta, StoryObj } from '@storybook/react';
-import Box from './Box';
-import Text from '../Text/Text';
+import Box from '@/components/layout/Box/Box';
+import Text from '@/components/typography/Text/Text'
 
 const meta: Meta<typeof Box> = {
     component: Box,
