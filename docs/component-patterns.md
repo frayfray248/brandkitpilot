@@ -5,7 +5,9 @@ This guide provides AI-optimized documentation for using the component library e
 ## Design System Principles
 
 ### Color Variants
-All components follow a consistent color system with these semantic meanings:
+All components follow a consistent color system with these semantic meanings and their corresponding content colors:
+
+#### Main Colors (Backgrounds)
 - **primary**: Main brand actions (CTAs, primary buttons)
 - **secondary**: Supporting actions 
 - **accent**: Highlights and special elements
@@ -15,6 +17,44 @@ All components follow a consistent color system with these semantic meanings:
 - **success**: Positive feedback/confirmation
 - **warning**: Caution/attention needed
 - **error**: Errors and destructive actions
+
+#### Content Colors (Text/Foreground)
+Each main color has a corresponding content color designed for optimal contrast:
+- **primary-content**: Text/content color for primary backgrounds
+- **secondary-content**: Text/content color for secondary backgrounds
+- **accent-content**: Text/content color for accent backgrounds
+- **neutral-content**: Text/content color for neutral backgrounds
+- **base-content**: Text/content color for base-100/200/300 backgrounds
+- **info-content**: Text/content color for info backgrounds
+- **success-content**: Text/content color for success backgrounds
+- **warning-content**: Text/content color for warning backgrounds
+- **error-content**: Text/content color for error backgrounds
+
+#### Color Pairing Rules
+Always pair main colors with their corresponding content colors for proper contrast:
+```tsx
+// ✅ Correct color pairing
+<Card bgColor="primary">
+  <Text color="primary-content">Primary card content</Text>
+</Card>
+
+<Card bgColor="success">
+  <Heading color="success-content">Success message</Heading>
+</Card>
+
+<Box bgColor="base-200">
+  <Text color="base-content">Base background content</Text>
+</Box>
+
+// ❌ Incorrect color pairing
+<Card bgColor="primary">
+  <Text color="base-content">Wrong contrast</Text>  {/* Poor contrast */}
+</Card>
+
+<Card bgColor="error">
+  <Text color="success-content">Confusing semantics</Text>  {/* Wrong meaning */}
+</Card>
+```
 
 ### Semantic HTML Principles
 Components support semantic HTML through the `as` prop for better accessibility and SEO:
