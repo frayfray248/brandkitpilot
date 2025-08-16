@@ -29,6 +29,8 @@ This project includes a comprehensive set of reusable UI components built with T
 
 - **Badge** - A flexible badge component for status indicators, labels, notifications, and activity dots with support for multiple color variants and sizes.
 - **Button** - A fully featured button component with multiple variants (primary, secondary, accent, etc.), sizes, and built-in accessibility features.
+- **Card** - A flexible card component with header, body, and footer sections, supporting multiple variants and interactive states.
+- **Modal** - A accessible modal component for overlays, forms, and confirmations with backdrop management, keyboard navigation, and customizable behavior.
 
 ### Form Components
 

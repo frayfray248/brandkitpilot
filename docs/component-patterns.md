@@ -285,6 +285,189 @@ const DeleteConfirmation = () => (
 </div>
 ```
 
+### Modal and Overlay Patterns
+
+**Pattern**: Use Modal component for overlays, forms, confirmations, and content that requires user focus. Always structure modals with Header, Body, and Footer sections for consistency.
+
+```tsx
+// ✅ Recommended: Confirmation modal with proper structure
+const DeleteConfirmationModal = ({ isOpen, onClose, onConfirm, itemName }) => (
+  <Modal isOpen={isOpen} onClose={onClose} size="sm">
+    <Modal.Header>
+      <Heading type="h2" color="error">Confirm Deletion</Heading>
+    </Modal.Header>
+    <Modal.Body>
+      <Text>
+        Are you sure you want to delete "{itemName}"? This action cannot be undone.
+      </Text>
+    </Modal.Body>
+    <Modal.Footer>
+      <FlexBox justify="end" gap="3">
+        <Button variant="base" onClick={onClose}>Cancel</Button>
+        <Button variant="error" onClick={onConfirm}>Delete</Button>
+      </FlexBox>
+    </Modal.Footer>
+  </Modal>
+);
+
+// ✅ Recommended: Form modal with validation
+const AddUserModal = ({ isOpen, onClose, onSubmit }) => {
+  const [formData, setFormData] = useState({ name: '', email: '', role: '' });
+  const [errors, setErrors] = useState({});
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} size="md">
+      <Modal.Header>
+        <Heading type="h2">Add New User</Heading>
+      </Modal.Header>
+      <Modal.Body>
+        <Stack gap="4">
+          <FormGroup 
+            label="Full Name" 
+            required 
+            errorMessage={errors.name}
+          >
+            <InputField
+              fullWidth
+              placeholder="Enter full name"
+              value={formData.name}
+              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+              color={errors.name ? 'error' : 'base'}
+            />
+          </FormGroup>
+          
+          <FormGroup 
+            label="Email Address" 
+            required 
+            errorMessage={errors.email}
+          >
+            <InputField
+              type="email"
+              fullWidth
+              placeholder="Enter email address"
+              value={formData.email}
+              onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+              color={errors.email ? 'error' : 'base'}
+            />
+          </FormGroup>
+          
+          <FormGroup label="Role" required>
+            <select 
+              className="w-full px-3 py-2 border border-base-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+              value={formData.role}
+              onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
+            >
+              <option value="">Select a role</option>
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+              <option value="viewer">Viewer</option>
+            </select>
+          </FormGroup>
+        </Stack>
+      </Modal.Body>
+      <Modal.Footer>
+        <FlexBox justify="end" gap="3">
+          <Button variant="base" onClick={onClose}>Cancel</Button>
+          <Button variant="primary" onClick={() => onSubmit(formData)}>
+            Add User
+          </Button>
+        </FlexBox>
+      </Modal.Footer>
+    </Modal>
+  );
+};
+
+// ✅ Recommended: Information modal with scrollable content
+const TermsModal = ({ isOpen, onClose, onAccept }) => (
+  <Modal isOpen={isOpen} onClose={onClose} size="lg">
+    <Modal.Header>
+      <Heading type="h2">Terms and Conditions</Heading>
+    </Modal.Header>
+    <Modal.Body>
+      <Stack gap="4">
+        <Text as="p">
+          Please read these terms and conditions carefully before using our service.
+        </Text>
+        {/* Long scrollable content */}
+        <Stack gap="3">
+          {Array.from({ length: 10 }, (_, i) => (
+            <Text as="p" key={i}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod 
+              tempor incididunt ut labore et dolore magna aliqua.
+            </Text>
+          ))}
+        </Stack>
+      </Stack>
+    </Modal.Body>
+    <Modal.Footer>
+      <FlexBox justify="end" gap="3">
+        <Button variant="base" onClick={onClose}>Decline</Button>
+        <Button variant="primary" onClick={onAccept}>Accept</Button>
+      </FlexBox>
+    </Modal.Footer>
+  </Modal>
+);
+
+// ✅ Recommended: Modal with different close behaviors
+const ImportantNoticeModal = ({ isOpen, onClose }) => (
+  <Modal 
+    isOpen={isOpen} 
+    onClose={onClose}
+    size="md"
+    closeOnOverlayClick={false}  // Prevent accidental closing
+    closeOnEscape={false}        // Force user to read
+    showCloseButton={false}      // Only allow explicit action
+  >
+    <Modal.Header>
+      <Heading type="h2" color="warning">Important Notice</Heading>
+    </Modal.Header>
+    <Modal.Body>
+      <Text>
+        This is critical information that requires your attention. 
+        Please read carefully before proceeding.
+      </Text>
+    </Modal.Body>
+    <Modal.Footer>
+      <FlexBox justify="center">
+        <Button variant="primary" onClick={onClose}>
+          I Understand
+        </Button>
+      </FlexBox>
+    </Modal.Footer>
+  </Modal>
+);
+
+// ❌ Avoid: Modal without proper structure
+<Modal isOpen={isOpen} onClose={onClose}>
+  <div className="p-6">  {/* Should use Modal.Header/Body/Footer */}
+    <h2>Title</h2>
+    <p>Content</p>
+    <button onClick={onClose}>Close</button>
+  </div>
+</Modal>
+
+// ❌ Avoid: Complex content without sections
+<Modal isOpen={isOpen} onClose={onClose}>
+  <Modal.Body>  {/* Missing header and footer structure */}
+    <h2>Title should be in Modal.Header</h2>
+    <p>Content here</p>
+    <div>
+      <button>Actions should be in Modal.Footer</button>
+    </div>
+  </Modal.Body>
+</Modal>
+
+// ❌ Avoid: Inline styles or manual positioning
+<Modal 
+  isOpen={isOpen} 
+  onClose={onClose}
+  className="top-10 left-10"  // Let Modal handle positioning
+  style={{ zIndex: 9999 }}   // Use built-in z-index management
+>
+  <Modal.Body>Content</Modal.Body>
+</Modal>
+```
+
 ## Advanced Patterns
 
 ### Responsive Form Layouts
@@ -481,6 +664,43 @@ const ProductGrid = ({ products }) => (
 <Button variant="success" onClick={deleteItem}>Delete</Button>  // Wrong
 ```
 
+### ❌ Modal Misuse
+```tsx
+// Don't use Modal for simple tooltips or dropdowns
+<Modal isOpen={showTooltip} onClose={() => setShowTooltip(false)}>
+  <Modal.Body>
+    <Text>This is just a tooltip</Text>  // Use proper tooltip component
+  </Modal.Body>
+</Modal>
+
+// Don't nest modals without proper state management
+<Modal isOpen={firstModal} onClose={closeFirst}>
+  <Modal.Body>
+    <Button onClick={() => setSecondModal(true)}>Open Another</Button>
+    <Modal isOpen={secondModal} onClose={closeSecond}>  // Problematic nesting
+      <Modal.Body>Nested content</Modal.Body>
+    </Modal>
+  </Modal.Body>
+</Modal>
+
+// Don't use Modal without proper focus management
+<Modal isOpen={isOpen} onClose={onClose} closeOnEscape={false}>
+  <Modal.Body>
+    <Text>No way to close this modal!</Text>  // Accessibility issue
+  </Modal.Body>
+</Modal>
+
+// Don't override Modal's built-in accessibility features
+<Modal 
+  isOpen={isOpen} 
+  onClose={onClose}
+  role="alertdialog"  // Modal already sets proper role
+  aria-modal="false"  // Conflicts with Modal's ARIA setup
+>
+  <Modal.Body>Content</Modal.Body>
+</Modal>
+```
+
 ### ❌ Manual Styling Override
 ```tsx
 // Don't override component styles manually
@@ -501,4 +721,28 @@ const ProductGrid = ({ products }) => (
 <FormGroup label="Email">
   <InputField required />  // Should mark FormGroup as required
 </FormGroup>
+
+// Don't create inaccessible modals
+<Modal isOpen={isOpen} onClose={onClose}>
+  <Modal.Header>
+    <h2>Title</h2>  {/* Should have id="modal-title" for aria-labelledby */}
+  </Modal.Header>
+  <Modal.Body>Content without proper focus management</Modal.Body>
+</Modal>
+
+// Don't disable all close methods
+<Modal 
+  isOpen={isOpen} 
+  onClose={onClose}
+  closeOnOverlayClick={false}
+  closeOnEscape={false}
+  showCloseButton={false}  // No way to close - accessibility issue
+>
+  <Modal.Body>Trapped content</Modal.Body>
+</Modal>
+
+// Don't ignore keyboard navigation
+<button onClick={openModal} onKeyDown={undefined}>  // Missing keyboard support
+  Open Modal
+</button>
 ```
