@@ -1,7 +1,7 @@
 ---
 mode: 'agent'
 model: Claude Sonnet 4
-tools: ['codebase', 'githubRepo', 'search']
+tools: ['codebase', 'usages', 'problems', 'changes', 'openSimpleBrowser', 'searchResults', 'githubRepo', 'editFiles', 'search', 'runCommands']
 description: 'Generate a new React Component'
 ---
 
