@@ -6,12 +6,26 @@ This Agents.md file provides comprehensive guidance for the OpenAI Codex, GitHub
 
 - `/src`: Source code that the AI Agent should analyze
   - `/app`: App Router directory with route segments and layout files
+  - `/auth`: Authentication-related files (better-auth)
     - the AI Agent should follow the file-based routing and segment convention
   - `/components`: React components and their Storybook stories that Agents.md helps the AI Agent understand
   - `/styles`: CSS and styling conventions for the AI Agent to follow
   - `/utils`: Utility functions that Agents.md documents for the AI Agent
 - `/public`: Static assets (the AI Agent should not modify these directly)
 - `/tests`: Test files that the AI Agent should maintain and extend
+
+## Authentication System for AI Agents
+
+This project uses **Better Auth** for authentication. AI agents should be familiar with this system when working on authentication-related features.
+
+The `/docs/better-auth.md` file contains Better Auth's LLM-specific documentation designed to help AI models understand how to properly interact with the authentication system.
+
+### Authentication Guidelines for AI Agents
+
+- Always use `authClient.useSession()` for session state management in React components
+- Handle authentication states with proper loading and error handling
+- Maintain consistency with existing authentication UI patterns
+- Always use a Data Access Layer (DAL) for database interactions involving sensitive data
 
 ## Coding Conventions for AI Agents
 

@@ -9,7 +9,7 @@ It includes:
 * Utility libraries and helper functions
 * Standardized API route design
 * Stripe integration for payments
-* NextAuth integration for authentication
+* Better Auth integration for authentication
 * MongoDB integration with a data access layer
 * A consistent styling system
 
@@ -20,6 +20,21 @@ Key features:
 * Encourages best practices in architecture and code organization
 
 Ideal for developers looking to kickstart their projects with a solid, production-ready foundation.
+
+## Authentication
+
+This project uses [Better Auth](https://better-auth.com/) for authentication, providing a comprehensive and framework-agnostic authentication solution with built-in support for:
+
+- Email and password authentication
+- Social sign-in providers
+- Session management
+- Type-safe authentication flows
+
+The authentication configuration and client setup can be found in `/src/auth/`:
+- `auth.ts` - Server-side authentication configuration
+- `authClient.ts` - Client-side authentication utilities
+
+Authentication routes are available at `/api/auth/*` and the project includes ready-to-use login and signup pages.
 
 ## Component Library
 
