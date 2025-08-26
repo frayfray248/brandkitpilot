@@ -4,6 +4,7 @@ This Agents.md file provides comprehensive guidance for the OpenAI Codex, GitHub
 
 ## Project Structure for the AI Agent Navigation
 
+- `/docs`: Documentation files
 - `/src`: Source code that the AI Agent should analyze
   - `/app`: App Router directory with route segments and layout files
   - `/auth`: Authentication-related files (better-auth)
@@ -14,18 +15,6 @@ This Agents.md file provides comprehensive guidance for the OpenAI Codex, GitHub
 - `/public`: Static assets (the AI Agent should not modify these directly)
 - `/tests`: Test files that the AI Agent should maintain and extend
 
-## Authentication System for AI Agents
-
-This project uses **Better Auth** for authentication. AI agents should be familiar with this system when working on authentication-related features.
-
-The `/docs/better-auth.md` file contains Better Auth's LLM-specific documentation designed to help AI models understand how to properly interact with the authentication system.
-
-### Authentication Guidelines for AI Agents
-
-- Always use `authClient.useSession()` for session state management in React components
-- Handle authentication states with proper loading and error handling
-- Maintain consistency with existing authentication UI patterns
-- Always use a Data Access Layer (DAL) for database interactions involving sensitive data
 
 ## Coding Conventions for AI Agents
 
@@ -42,6 +31,21 @@ The `/docs/better-auth.md` file contains Better Auth's LLM-specific documentatio
   - React components and schemas should start with a capital letter
   - most other filenames and functions should start with a lower case letter
 
+### Authentication Guidelines for AI Agents
+
+This project uses **Better Auth** for authentication. AI agents should be familiar with this system when working on authentication-related features.
+
+The `/docs/better-auth.md` file contains Better Auth's LLM-specific documentation designed to help AI models understand how to properly interact with the authentication system.
+
+- Always use `authClient.useSession()` for session state management in React components
+- Handle authentication states with proper loading and error handling
+- Maintain consistency with existing authentication UI patterns
+- Always use a Data Access Layer (DAL) for database interactions involving sensitive data
+
+### Database Guidelines for AI Agents
+
+- the AI Agent should use Prisma ORM for all database interactions
+
 ### React Components Guidelines for AI Agents
 
 - the AI Agent should use functional components with hooks as specified in Agents.md
@@ -50,7 +54,9 @@ The `/docs/better-auth.md` file contains Better Auth's LLM-specific documentatio
 - the AI Agent should always create a React Storybook entry for each new reusable component
 - the AI Agent should add `ref` support via `ComponentPropsWithRef` when the component is a thin wrapper around a DOM element or another ref-forwarding component, and when consumers are likely to need direct access to that element (e.g., for focus, measurement, or scrolling).
 - the AI Agent should NEVER use `forwardRef` as it will be deprecated.
-- The AI Agent should always update documentation and stories when creating or modifying components.
+- A full list of available components can be found in `docs/component-list.md`.
+- The AI Agent should always update relevant documentation and stories when creating or modifying components, and must always update `docs/component-list.md` when adding/removing components.
+- The AI Agent must follow the practices outlined in `docs/component-patterns.md` when implementing complex components, pages, and layouts.
 
 ### CSS/Styling Standards for AI Agents
 
