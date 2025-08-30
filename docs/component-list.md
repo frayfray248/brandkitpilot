@@ -8,6 +8,7 @@ This project includes a comprehensive set of reusable UI components built with T
 - **Button** - A fully featured button component with multiple variants (primary, secondary, accent, etc.), sizes, and built-in accessibility features.
 - **Card** - A flexible card component with header, body, and footer sections, supporting multiple variants and interactive states.
 - **Modal** - A accessible modal component for overlays, forms, and confirmations with backdrop management, keyboard navigation, and customizable behavior.
+- **Toast** - A notification component for displaying feedback messages with multiple variants (primary, secondary, accent, neutral, base colors, info, success, warning, error), positioning options, auto-dismiss functionality, customizable icons and close buttons, and consistent responsive widths. Visibility is controlled through conditional rendering.
 
 ## Form Components
 
