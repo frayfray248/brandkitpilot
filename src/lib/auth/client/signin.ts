@@ -1,5 +1,5 @@
 import { authClient } from "@/auth/authClient"
-import { getErrorMessage } from "@/lib/auth/clientError"
+import { getErrorMessage } from "./error"
 import { SIGNIN_CALLBACK_URL, SIGNIN_ERROR_CALLBACK_URL, } from "@/lib/auth/const"
 
 const clientSignin = async (email: string) => {

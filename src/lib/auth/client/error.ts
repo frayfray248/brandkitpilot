@@ -18,5 +18,5 @@ export const getErrorMessage = (code: string) => {
     if (code in authClientErrorCodesMessages) {
         return authClientErrorCodesMessages[code as keyof typeof authClientErrorCodesMessages];
     }
-    return "";
+    return "An unknown error occurred. Please try again.";
 };
