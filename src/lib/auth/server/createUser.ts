@@ -1,6 +1,6 @@
 "use server"
 import { auth } from "@/auth/auth"
-import { getErrorMessage } from "@/lib/auth/clientError"
+import { getErrorMessage } from "@/lib/auth/client/error"
 import { APIError } from "better-auth/api"
 
 
@@ -11,7 +11,7 @@ const createUser = async (name: string, email: string) => {
             body: {
                 name,
                 email,
-                password: crypto.randomUUID() // Temporary password, as we'll use magic link for sign-in
+                password: Array.from(crypto.getRandomValues(new Uint8Array(16)), b => b.toString(16).padStart(2, '0')).join('') // Secure random temporary password
             }
         })
 
