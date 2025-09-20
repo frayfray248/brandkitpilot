@@ -1,10 +1,12 @@
+import Box from "@/components/layout/Box/Box";
+import Heading from "@/components/typography/Heading/Heading";
 
-
-export default function Home() {
+export default async function Home() {
     
     return (
-        <main >
-        </main>
+        <Box>
+            <Heading type="h1">Welcome to the BrandKitPilot</Heading>
+        </Box>
     );
 }
 
