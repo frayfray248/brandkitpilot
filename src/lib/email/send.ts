@@ -1,11 +1,9 @@
+import serverEnv from "@/lib/env/serverEnv";
 import transporter from "./transporter"
 
-if (!process.env.EMAIL_FROM) {
-    throw new Error('EMAIL_FROM environment variable is not set.');
-}
 
 const sendEmail = async (to: string, subject: string, text: string) => {
-    const emailFrom = process.env.EMAIL_FROM;
+    const emailFrom = serverEnv.EMAIL_FROM;
     if (!emailFrom) {
         throw new Error('EMAIL_FROM environment variable is not set.');
     }
