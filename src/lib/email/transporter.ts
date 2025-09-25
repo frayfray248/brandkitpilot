@@ -1,15 +1,13 @@
+import serverEnv from '@/lib/env/serverEnv';
 import nodemailer from 'nodemailer';
 
-if (!process.env.EMAIL_SERVER_HOST || !process.env.EMAIL_SERVER_PORT || !process.env.EMAIL_SERVER_USER || !process.env.EMAIL_SERVER_PASSWORD) {
-    throw new Error('Email server environment variables are not set correctly.');
-}
 
 const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_SERVER_HOST,
-    port: Number(process.env.EMAIL_SERVER_PORT),
+    host: serverEnv.EMAIL_SERVER_HOST,
+    port: Number(serverEnv.EMAIL_SERVER_PORT),
     auth: {
-        user: process.env.EMAIL_SERVER_USER,
-        pass: process.env.EMAIL_SERVER_PASSWORD
+        user: serverEnv.EMAIL_SERVER_USER,
+        pass: serverEnv.EMAIL_SERVER_PASSWORD
     }
 })
 
