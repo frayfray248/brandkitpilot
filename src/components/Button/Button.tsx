@@ -2,7 +2,7 @@ import type { ComponentPropsWithRef } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 const button = tv({
-    base: 'rounded font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-base-100 disabled:opacity-50 disabled:pointer-events-none',
+    base: 'rounded font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-base-100 disabled:opacity-50 disabled:pointer-events-none cursor-pointer',
     variants: {
         variant: {
             primary:
