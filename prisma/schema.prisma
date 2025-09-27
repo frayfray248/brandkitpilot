@@ -21,6 +21,8 @@ model User {
   updatedAt     DateTime
   sessions      Session[]
   accounts      Account[]
+  tokens        Int      @default(0)
+  tokenTransactions TokenTransaction[]
 
   role       String?
   banned     Boolean?  @default(false)
@@ -29,6 +31,24 @@ model User {
 
   @@unique([email])
   @@map("user")
+}
+
+model TokenTransaction {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    userId    String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    type      TokenTransactionType
+    tokens    Int
+    stripeSessionId String?
+    createdAt DateTime @default(now())
+
+    @@unique([stripeSessionId])
+    @@map("token_transaction")
+}
+
+enum TokenTransactionType {
+    PURCHASE
+    CONSUME
 }
 
 model Session {

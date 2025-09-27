@@ -1,5 +1,5 @@
 import { auth } from "@/auth/auth"
-import { CHECK_AUTH_REDIRECT_URL } from "@/lib/auth/const"
+import { CHECKOUT_AUTH_REDIRECT_URL } from "@/lib/auth/const"
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers"
 import { redirect } from "next/navigation"
 
@@ -17,7 +17,7 @@ export const checkServerAuth = async (headers: () => Promise<ReadonlyHeaders>) =
     const session = await getServerSession(headers)
 
     if (!session) {
-        redirect(CHECK_AUTH_REDIRECT_URL)
+        redirect(CHECKOUT_AUTH_REDIRECT_URL)
     }
 
     return session
