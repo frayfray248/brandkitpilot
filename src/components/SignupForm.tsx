@@ -45,7 +45,6 @@ const SignupForm: React.FC = () => {
 
     return (
         <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-6">
-            <h2 className="text-xl font-bold mb-2">Sign Up</h2>
             <FormGroup
                 label="Create Account"
                 required

@@ -27,7 +27,7 @@ const ProductCard = ({ product } : { product: StripeProduct }) => {
     }
 
     return (
-        <Card variant="elevated" interactive className="max-w-sm">
+        <Card variant="elevated" interactive className="w-48">
 
             <Card.Body>
                 <Stack gap="3">
@@ -43,7 +43,7 @@ const ProductCard = ({ product } : { product: StripeProduct }) => {
             <Card.Footer>
                 <Button
                     variant='primary'
-                    size="sm"
+                    size="lg"
                     className="w-full"
                     disabled={isLoading}
                     onClick={handleBuy}

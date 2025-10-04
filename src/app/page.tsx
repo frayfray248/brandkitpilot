@@ -1,12 +1,13 @@
-import Box from "@/components/layout/Box/Box";
+
+import Stack from "@/components/layout/Stack/Stack";
 import Heading from "@/components/typography/Heading/Heading";
 
 export default async function Home() {
     
     return (
-        <Box>
+        <Stack gap="8">
             <Heading type="h1">Welcome to the BrandKitPilot</Heading>
-        </Box>
+        </Stack>
     );
 }
 
