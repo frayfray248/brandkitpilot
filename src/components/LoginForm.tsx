@@ -42,7 +42,6 @@ const LoginForm: React.FC = () => {
 
     return (
         <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-6">
-            <h2 className="text-xl font-bold mb-2">Sign In</h2>
             <FormGroup
                 label="Email address"
                 required

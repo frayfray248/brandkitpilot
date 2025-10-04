@@ -2,6 +2,8 @@
 
 import prisma from "@/db/db"
 import { TokenTransactionType } from "../../../generated/prisma"
+import { checkServerAuth } from "@/lib/auth/server/session"
+import { headers } from "next/headers"
 
 
 
@@ -19,6 +21,17 @@ export const createTokenTransaction = async (
             tokens,
             stripeSessionId,
         }
+    })
+
+}
+
+export const getUserTokenTransactions = async () => {
+
+    const session = await checkServerAuth(headers)
+
+    return prisma.tokenTransaction.findMany({
+        where: { userId: session.user.id },
+        orderBy: { createdAt: 'desc' }
     })
 
 }
