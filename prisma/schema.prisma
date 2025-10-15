@@ -21,16 +21,23 @@ model User {
   updatedAt     DateTime
   sessions      Session[]
   accounts      Account[]
-  tokens        Int      @default(0)
-  tokenTransactions TokenTransaction[]
-
   role       String?
   banned     Boolean?  @default(false)
   banReason  String?
   banExpires DateTime?
 
+  // app fields
+  tokens        Int      @default(0)
+  tokenTransactions TokenTransaction[]
+  termsAccepted TermsAccepted
+
   @@unique([email])
   @@map("user")
+}
+
+type TermsAccepted {
+    timestamp DateTime  @default(now())
+    version   String    @default("")
 }
 
 model TokenTransaction {

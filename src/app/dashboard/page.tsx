@@ -1,18 +1,20 @@
-
-
 import React from 'react';
 import Box from '@/components/layout/Box/Box';
 import Heading from '@/components/typography/Heading/Heading';
 import Text from '@/components/typography/Text/Text';
 import { getUser } from '@/lib/dal/users';
-import Table from '@/components/Table/Table';
 import Stack from '@/components/layout/Stack/Stack';
 import FlexBox from '@/components/layout/FlexBox/FlexBox';
 import Button from '@/components/Button/Button';
+import { redirect } from 'next/navigation';
 
 const page = async () => {
 
     const user = await getUser()
+
+    if (!user.termsAccepted.version) {
+        redirect('/legal/accept')
+    }
 
     return (
             <Stack gap="8">

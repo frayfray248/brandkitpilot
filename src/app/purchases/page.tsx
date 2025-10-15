@@ -1,13 +1,19 @@
 import React from "react";
 import Box from '@/components/layout/Box/Box';
 import Heading from '@/components/typography/Heading/Heading';
-import Text from '@/components/typography/Text/Text';
 import Stack from "@/components/layout/Stack/Stack";
-import FlexBox from "@/components/layout/FlexBox/FlexBox";
 import { getUserTokenTransactions } from "@/lib/dal/tokenTransactions";
 import Table from "@/components/Table/Table";
+import { getUser } from "@/lib/dal/users";
+import { redirect } from "next/navigation";
 
 const PurchasesPage = async () => {
+
+    const user = await getUser()
+
+    if (!user.termsAccepted.version) {
+        redirect('/legal/accept')
+    }
 
     const transactions = await getUserTokenTransactions()
 

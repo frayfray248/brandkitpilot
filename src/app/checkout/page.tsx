@@ -4,12 +4,16 @@ import Heading from '@/components/typography/Heading/Heading';
 import ProductCard from "@/components/ProductCard";
 import Stack from "@/components/layout/Stack/Stack";
 import getProducts from "@/lib/stripe/getProducts";
-import { checkServerAuth } from "@/lib/auth/server/session";
-import { headers } from "next/headers";
+import { getUser } from "@/lib/dal/users";
+import { redirect } from "next/navigation";
 
 const CheckoutPage = async () => {
 
-    await checkServerAuth(headers)
+    const user = await getUser()
+
+    if (!user.termsAccepted.version) {
+        redirect('/legal/accept')
+    }
 
     const products = (await getProducts()).sort((a, b) => a.tokens - b.tokens);
 

@@ -10,8 +10,9 @@
     "prepare": "husky",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "generate:prisma": "dotenv -e .env.local -- npx prisma generate",
-    "generate:auth": "dotenv -e .env.local -- npx @better-auth/cli generate --config /src/auth/auth.ts"
+    "schema:migrate": "dotenv -e .env.local -- npx prisma migrate dev",
+    "schema:generate": "dotenv -e .env.local -- npx prisma generate",
+    "schema:generate-auth": "dotenv -e .env.local -- npx @better-auth/cli generate --config /src/auth/auth.ts"
   },
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.882.0",
