@@ -17,3 +17,20 @@ export const getUser = async () => {
     return user
 
 }
+
+export const userAcceptTerms = async (version: string) => {
+
+    const session = await checkServerAuth(headers)
+
+    const user = await prisma.user.update({
+        where: { id: session.user.id },
+        data: {
+            termsAccepted: {
+                timestamp: new Date(),
+                version: version
+            }
+        }
+    })
+
+    return user
+}

@@ -7,6 +7,7 @@ import { InvalidProductError, validateStripeProduct } from "@/lib/stripe/validat
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { getUser } from "@/lib/dal/users";
 
 export const POST = async (request: NextRequest) => {
     try {
@@ -17,7 +18,12 @@ export const POST = async (request: NextRequest) => {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
 
-        const user = session.user;
+        const user = await getUser()
+
+        if (!user.termsAccepted.version) {
+            return NextResponse.json({ message: "Terms not accepted" }, { status: 403 });
+        }
+
 
         const stripe = new Stripe(serverEnv.STRIPE_SECRET_KEY);
 
