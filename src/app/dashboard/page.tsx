@@ -7,6 +7,7 @@ import Stack from '@/components/layout/Stack/Stack';
 import FlexBox from '@/components/layout/FlexBox/FlexBox';
 import Button from '@/components/Button/Button';
 import { redirect } from 'next/navigation';
+import { getAllBrandKitsByUserId } from '@/lib/dal/brandkits';
 
 const page = async () => {
 
@@ -15,6 +16,8 @@ const page = async () => {
     if (!user.termsAccepted.version) {
         redirect('/legal/accept')
     }
+
+    const brandKits = await getAllBrandKitsByUserId(user.id);
 
     return (
             <Stack gap="8">
@@ -29,11 +32,11 @@ const page = async () => {
 
                         <hr className='border-t border-base-300' />
                         <ul className="list-inside list-none text-secondary cursor-pointer">
-                            <li>Amy&apos;s Family Bakery</li>
-                            <li>John&apos;s Plumbing</li>
-                            <li>Sarah&apos;s Salon</li>
-                            <li>Mike&apos;s Gym</li>
-                            <li>Linda&apos;s Boutique</li>
+                            {brandKits.map((kit) => (
+                                <li key={kit.id} className="py-2 hover:text-primary">
+                                    <a href={`/results/${kit.id}`}>{kit.title}</a>
+                                </li>
+                            ))}
                         </ul>
                     </Stack>
                 </Box>

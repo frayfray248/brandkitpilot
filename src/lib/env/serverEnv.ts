@@ -19,6 +19,8 @@ const serverSchema = z.object({
     EMAIL_SERVER_HOST: z.string().min(1),
     EMAIL_SERVER_PORT: z.coerce.number().min(1),
     EMAIL_FROM: z.email(),
+    // REDIS
+    REDIS_URL: z.string().min(1),
 })
 
 const _server = serverSchema.safeParse(process.env);

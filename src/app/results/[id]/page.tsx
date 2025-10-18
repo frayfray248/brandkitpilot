@@ -4,7 +4,8 @@ import Heading from '@/components/typography/Heading/Heading';
 import Text from '@/components/typography/Text/Text';
 import Stack from "@/components/layout/Stack/Stack";
 import { getUser } from "@/lib/dal/users";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { getBrandKitById } from "@/lib/dal/brandkits";
 
 interface ResultsPageProps {
     params: Promise<{ id: string }>;
@@ -12,7 +13,7 @@ interface ResultsPageProps {
 
 const ResultsPage = async ({ params }: ResultsPageProps) => {
 
-    const { id } = await params;
+    const { id : brandKitId } = await params;
 
     const user = await getUser()
 
@@ -20,12 +21,16 @@ const ResultsPage = async ({ params }: ResultsPageProps) => {
         redirect('/legal/accept')
     }
 
+    const brandKit = await getBrandKitById(brandKitId)
+
+    if (!brandKit) notFound()
+
     return (
         <Stack gap="8">
-            <Heading type="h1">Results</Heading>
+            <Heading type="h1">BrandKit: {brandKit.title}</Heading>
 
             <Box bgColor='base-100' padding='6' className='rounded-lg max-w-sm'>
-                <Text>Showing results for ID: {id}</Text>
+                <Text>Status: {brandKit.status}</Text>
             </Box>
         </Stack>
     );
