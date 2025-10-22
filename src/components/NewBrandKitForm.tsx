@@ -1,8 +1,10 @@
 "use client";
+import { authClient } from '@/auth/authClient';
 import Button from '@/components/Button/Button';
 import FormGroup from '@/components/form/FormGroup/FormGroup';
 import InputField from '@/components/form/InputField/InputField';
 import Stack from '@/components/layout/Stack/Stack';
+import { startGenerateBrandKitJob } from '@/lib/queue/actions';
 import { useRouter } from 'next/navigation';
 import React from 'react'
 
@@ -16,12 +18,26 @@ const NewBrandKitForm = () => {
     ];
 
     const router = useRouter();
+    const { data: session } = authClient.useSession()
+    
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // TODO: Handle form submission
+        try {
 
-        router.push('/results/1')
+            if (!session) {
+                router.push('/login');
+                return;
+            }
+
+            const createdBrandKitId = await startGenerateBrandKitJob(session.user.id, "New Brand Kit");
+
+            router.push(`/results/${createdBrandKitId}`)
+
+        } catch(error) {
+            console.error("Error submitting form:", error);
+        }
     };
 
     return (

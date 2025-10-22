@@ -30,6 +30,7 @@ model User {
   tokens        Int      @default(0)
   tokenTransactions TokenTransaction[]
   termsAccepted TermsAccepted
+  brandKits     BrandKit[]
 
   @@unique([email])
   @@map("user")
@@ -56,6 +57,20 @@ model TokenTransaction {
 enum TokenTransactionType {
     PURCHASE
     CONSUME
+}
+
+model BrandKit {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    userId    String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    title     String
+    status    BrandKitStatus @default(PENDING)
+}
+
+enum BrandKitStatus {
+    PENDING
+    COMPLETED
+    FAILED
 }
 
 model Session {
