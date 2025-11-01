@@ -2,6 +2,11 @@
   "name": "brandkitpilot",
   "version": "0.3.0",
   "private": true,
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run build"
+    }
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -10,10 +15,12 @@
     "prepare": "husky",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "schema:migrate": "dotenv -e .env.local -- npx prisma migrate dev",
     "schema:generate": "dotenv -e .env.local -- npx prisma generate",
     "schema:generate-auth": "dotenv -e .env.local -- npx @better-auth/cli generate --config /src/auth/auth.ts",
-    "worker:start": "dotenv -e .env.local -- tsx src/lib/worker/brandkit.worker.ts"
+    "worker:start": "dotenv -e .env.local -- tsx src/lib/worker/brandkit.worker.ts",
+    "containers:build-dev": "docker compose -f docker/docker-compose.yml build",
+    "containers:start-dev": "docker compose -f docker/docker-compose.yml up -d",
+    "containers:stop-dev": "docker compose -f docker/docker-compose.yml down"
   },
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.882.0",
