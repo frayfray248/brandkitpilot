@@ -1,0 +1,36 @@
+
+services:
+  memory-cache:
+    image: valkey/valkey:latest
+    container_name: memory-cache
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+  worker:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile.worker
+    container_name: worker
+    restart: unless-stopped
+    networks:
+      - app-network
+    depends_on:
+      - memory-cache
+    env_file: ../.env.local
+    environment:
+      - REDIS_URL=memory-cache
+
+  stripe-cli:
+    image: stripe/stripe-cli:latest
+    container_name: stripe-cli
+    command: ["listen", "--forward-to", "${FORWARD_TO}"]
+    environment:
+      - STRIPE_API_KEY=${STRIPE_API_KEY}
+    network_mode: host
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge

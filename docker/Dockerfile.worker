@@ -1,0 +1,25 @@
+FROM node:24.11.0-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy only files needed for schema generation
+COPY prisma ./prisma
+COPY src ./src
+
+# Install tsx globally for TypeScript execution (required for running TypeScript files directly)
+RUN npm install -g tsx
+
+RUN mkdir -p ./generated/prisma
+RUN npm run schema:generate
+
+# Copy the rest of the source code and other files
+COPY . .
+
+# Run the worker
+CMD ["npm", "run", "worker:start"]
