@@ -65,7 +65,9 @@ model BrandKit {
     user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     title     String
     status    BrandKitStatus @default(PENDING)
+    outputs   Json
 }
+
 
 enum BrandKitStatus {
     PENDING

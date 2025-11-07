@@ -31,6 +31,7 @@ const ResultsPage = async ({ params }: ResultsPageProps) => {
 
             <Box bgColor='base-100' padding='6' className='rounded-lg max-w-sm'>
                 <Text>Status: {brandKit.status}</Text>
+                <Text>Outputs: {JSON.stringify(brandKit.outputs)}</Text>
             </Box>
         </Stack>
     );
