@@ -2,13 +2,15 @@ import prisma from "@/db/db";
 import { BrandKitStatus } from "../../../generated/prisma";
 import { checkServerAuth } from "@/lib/auth/server/session";
 import { headers } from "next/headers";
+import { JsonObject } from "@prisma/client/runtime/library";
 
 export const createBrandKit = async (userId: string, title: string) => {
 
     const createdBrandKit = await prisma.brandKit.create({
         data: {
             userId,
-            title
+            title,
+            outputs: {}
         }
     });
 
@@ -16,14 +18,15 @@ export const createBrandKit = async (userId: string, title: string) => {
 
 }
 
-export const updateBrandKit = async (brandKitId: string, status: BrandKitStatus) => {
+export const updateBrandKit = async (brandKitId: string, status: BrandKitStatus, outputs: JsonObject) => {
 
     const updatedBrandKit = await prisma.brandKit.update({
         where: {
             id: brandKitId
         },
         data: {
-            status
+            status,
+            outputs
         }
     });
 

@@ -31,7 +31,12 @@ const NewBrandKitForm = () => {
                 return;
             }
 
-            const createdBrandKitId = await startGenerateBrandKitJob(session.user.id, "New Brand Kit");
+            const formData = new FormData(e.currentTarget);
+
+            const createdBrandKitId = await startGenerateBrandKitJob({
+                userId: session.user.id,
+                title: formData.get('businessName') as string,
+            });
 
             router.push(`/results/${createdBrandKitId}`)
 
@@ -68,6 +73,7 @@ const NewBrandKitForm = () => {
                 >
                     <InputField
                         type="text"
+                        name="businessName"
                         placeholder="Enter your business name"
                         fullWidth
                         required

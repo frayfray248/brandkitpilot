@@ -21,6 +21,8 @@ const serverSchema = z.object({
     EMAIL_FROM: z.email(),
     // REDIS
     REDIS_URL: z.string().min(1),
+    // OPENAI
+    OPENAI_API_KEY: z.string().min(1),
 })
 
 const _server = serverSchema.safeParse(process.env);
