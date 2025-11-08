@@ -2,7 +2,7 @@
 
 import { createBrandKit } from "@/lib/dal/brandkits"
 import { GENERATE_BRANDKIT_JOB_NAME } from "@/lib/queue/const"
-import { brandkitQueue } from "@/lib/queue/queue"
+import { getBrandkitQueue } from "@/lib/queue/queue"
 import { BrandKitRequestData, BrandKitRequestDataSchema } from "@/lib/queue/schemas"
 
 export const startGenerateBrandKitJob = async (data : unknown) => {
@@ -11,7 +11,10 @@ export const startGenerateBrandKitJob = async (data : unknown) => {
 
     const createdBrandKit = await createBrandKit(parsedData.userId, parsedData.title)
 
-    await brandkitQueue.add(GENERATE_BRANDKIT_JOB_NAME, {
+    // Get queue instance with shared Redis connection
+    const queue = await getBrandkitQueue()
+    
+    await queue.add(GENERATE_BRANDKIT_JOB_NAME, {
         ...parsedData,
         brandKitId: createdBrandKit.id
     })

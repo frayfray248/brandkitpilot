@@ -1,104 +1,128 @@
 import { generateSlogan } from "@/lib/ai/openai";
 import { updateBrandKit } from "@/lib/dal/brandkits";
-import serverEnv from "@/lib/env/serverEnv";
 import { BRANDKIT_QUEUE_NAME } from "@/lib/queue/const";
 import { BrandKitRequestData } from "@/lib/queue/schemas";
+import { getRedisConnection, closeRedisConnection } from "@/lib/redis/connection";
 import { Worker } from "bullmq";
-import IORedis from "ioredis";
 
-const connection = new IORedis(serverEnv.REDIS_URL, {
-    maxRetriesPerRequest: null,
-    enableReadyCheck: false,
-});
+console.log("Starting BrandKit worker with Redis connection pooling...");
 
-console.log("Starting BrandKit worker...");
-
-const worker = new Worker(BRANDKIT_QUEUE_NAME, async job => {
-
-    const startTime = Date.now()
-    let brandKitId: string | undefined
-
+// Initialize and start the worker
+const startWorker = async () => {
     try {
+        console.log('🔄 Initializing worker with shared Redis connection...');
+        const connection = await getRedisConnection();
+        
+        const worker = new Worker(BRANDKIT_QUEUE_NAME, async job => {
 
-        console.log("Processing job:", job.id);
+            const startTime = Date.now()
+            let brandKitId: string | undefined
 
-        const data: BrandKitRequestData & { brandKitId: string } = job.data;
+            try {
 
-        if (!data.brandKitId) {
-            throw new Error("Missing brandKitId in job data");
-        }
+                console.log("Processing job:", job.id);
 
-        if (!data.title?.trim()) {
-            throw new Error("Missing or empty title in job data");
-        }
+                const data: BrandKitRequestData & { brandKitId: string } = job.data;
 
-        brandKitId = data.brandKitId;
+                if (!data.brandKitId) {
+                    throw new Error("Missing brandKitId in job data");
+                }
 
-        const slogan = await generateSlogan(data.title);
+                if (!data.title?.trim()) {
+                    throw new Error("Missing or empty title in job data");
+                }
 
-        if (!slogan?.trim()) {
-            throw new Error("Failed to generate slogan - empty result");
-        }
+                brandKitId = data.brandKitId;
 
-        const createdBrandKit = await updateBrandKit(
-            data.brandKitId,
-            "COMPLETED",
-            {
-                "0": slogan
+                const slogan = await generateSlogan(data.title);
+
+                if (!slogan?.trim()) {
+                    throw new Error("Failed to generate slogan - empty result");
+                }
+
+                const createdBrandKit = await updateBrandKit(
+                    data.brandKitId,
+                    "COMPLETED",
+                    {
+                        "0": slogan
+                    }
+                );
+
+                const duration = Date.now() - startTime;
+                console.log(`✅ Brand kit complete: ${createdBrandKit.id} (${duration}ms)`);
+
+                return createdBrandKit;
+
+            } catch (error) {
+                console.error("Error processing job:", job.id, error);
+
+                if (brandKitId) {
+                    await updateBrandKit(
+                        brandKitId,
+                        "FAILED",
+                        {}
+                    );
+                }
+                throw error;
             }
-        );
 
-        const duration = Date.now() - startTime;
-        console.log(`✅ Brand kit complete: ${createdBrandKit.id} (${duration}ms)`);
+        }, {
+            connection,
+            concurrency: 3
+        });
 
-        return createdBrandKit;
+        // Set up event listeners
+        worker.on('completed', job => {
+            console.log(`✅ Job ${job.id} has completed!`);
+        });
+
+        worker.on('failed', (job, err) => {
+            console.log(`❌ Job ${job?.id} has failed with ${err.message}`);
+            console.error(err);
+        });
+
+        worker.on('error', err => {
+            console.error('Worker error:', err);
+        });
+
+        worker.on('ready', () => {
+            console.log('🚀 Worker is ready and waiting for jobs...');
+        });
+
+        // Graceful shutdown handlers
+        let isShuttingDown = false;
+        const shutdown = async (signal: string) => {
+            if (isShuttingDown) {
+                console.log(`Shutdown already in progress, ignoring ${signal}`);
+                return;
+            }
+            isShuttingDown = true;
+            console.log(`Received ${signal}, closing worker...`);
+            try {
+                await worker.close();
+                await closeRedisConnection();
+                console.log('✅ Worker and Redis connection closed gracefully');
+                process.exit(0);
+            } catch (error) {
+                console.error('Error during shutdown:', error);
+                process.exit(1);
+            }
+        };
+
+        process.on('SIGTERM', () => shutdown('SIGTERM'));
+        process.on('SIGINT', () => shutdown('SIGINT'));
+
+        console.log('✅ Worker initialized successfully with Redis connection pooling');
+        return worker;
 
     } catch (error) {
-        console.error("Error processing job:", job.id, error);
-
-        if (brandKitId) {
-            await updateBrandKit(
-                brandKitId,
-                "FAILED",
-                {}
-            );
-        }
-        throw error;
+        console.error('❌ Failed to initialize worker:', error);
+        process.exit(1);
     }
+};
 
-}, {
-    connection,
-    concurrency: 3
-});
-
-worker.on('completed', job => {
-    console.log(`✅ Job ${job.id} has completed!`);
-});
-
-worker.on('failed', (job, err) => {
-    console.log(`❌ Job ${job?.id} has failed with ${err.message}`);
-    console.error(err);
-});
-
-worker.on('error', err => {
-    console.error('Worker error:', err);
-});
-
-worker.on('ready', () => {
-    console.log('🚀 Worker is ready and waiting for jobs...');
-});
-
-// Graceful shutdown
-process.on('SIGTERM', async () => {
-    console.log('Received SIGTERM, closing worker...');
-    await worker.close();
-    await connection.quit();
-    process.exit(0);
-});
-
-process.on('SIGINT', async () => {
-    console.log('Received SIGINT, closing worker...');
-    await worker.close();
-    await connection.quit();
-    process.exit(0);
+// Start the worker
+startWorker().catch(error => {
+    console.error('❌ Critical error starting worker:', error);
+    process.exit(1);
 });

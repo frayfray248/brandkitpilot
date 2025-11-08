@@ -22,4 +22,4 @@ RUN npm run schema:generate
 COPY . .
 
 # Run the worker
-CMD ["npm", "run", "worker:start"]
+CMD ["npm", "run", "worker:start-dev"]
