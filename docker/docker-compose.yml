@@ -20,7 +20,11 @@ services:
       - memory-cache
     env_file: ../.env.local
     environment:
-      - REDIS_URL=memory-cache
+      - REDIS_URL=redis://memory-cache:6379
+    volumes:
+      - ../:/app:cached
+      - /app/node_modules
+      - /app/generated/prisma # must be excluded so Prisma uses the correct binaries for inside the container
 
   stripe-cli:
     image: stripe/stripe-cli:latest
