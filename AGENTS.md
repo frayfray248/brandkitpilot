@@ -4,17 +4,61 @@ This Agents.md file provides comprehensive guidance for the OpenAI Codex, GitHub
 
 ## Project Structure for the AI Agent Navigation
 
-- `/docs`: Documentation files
-- `/src`: Source code that the AI Agent should analyze
-  - `/app`: App Router directory with route segments and layout files
-  - `/auth`: Authentication-related files (better-auth)
-    - the AI Agent should follow the file-based routing and segment convention
-  - `/components`: React components and their Storybook stories that Agents.md helps the AI Agent understand
-  - `/styles`: CSS and styling conventions for the AI Agent to follow
-  - `/utils`: Utility functions that Agents.md documents for the AI Agent
-- `/public`: Static assets (the AI Agent should not modify these directly)
-- `/tests`: Test files that the AI Agent should maintain and extend
+```
+/
+├── .github/                # GitHub configuration
+│   ├── instructions/      # AI agent instructions
+│   └── prompts/           # Development prompts
+├── .storybook/            # Storybook configuration
+│   ├── main.ts           # Storybook main config
+│   ├── preview.ts        # Global Storybook settings
+│   └── vitest.setup.ts   # Vitest integration setup
+├── docker/                # Docker configuration
+│   ├── .env              # Docker environment variables
+│   ├── Dockerfile.worker # Worker container configuration
+│   └── docker-compose.yml # Multi-service orchestration
+├── docs/                  # Project documentation
+├── generated/             # Generated code
+│   └── prisma/           # Generated Prisma client
+├── prisma/               # Database schema and migrations
+├── public/               # Static assets
+├── src/
+│   ├── app/              # Next.js App Router pages
+│   │   ├── api/          # API endpoints (auth, health, stripe, webhooks)
+│   │   ├── checkout/     # Stripe checkout page
+│   │   ├── dashboard/    # User dashboard and brand kit management
+│   │   ├── legal/        # Legal pages (terms, privacy, acceptance)
+│   │   ├── login/        # Authentication pages
+│   │   ├── purchases/    # Purchase history and token management
+│   │   ├── results/      # Brand kit results display ([id] dynamic routes)
+│   │   ├── signup/       # User registration
+│   │   ├── start/        # Brand kit creation form
+│   │   └── [core files]  # globals.css, layout.tsx, page.tsx
+│   ├── auth/             # Better Auth configuration
+│   │   ├── auth.ts       # Server auth configuration
+│   │   ├── authClient.ts # Client auth utilities
+│   ├── components/       # React components with Storybook stories
+│   ├── db/               # Database connection
+│   ├── hooks/            # Custom React hooks
+│   └── lib/              # Shared utilities and services
+│       ├── ai/           # OpenAI integration and brand generation
+│       ├── api/          # API utilities and standardized responses
+│       ├── auth/         # Authentication utilities (client/server)
+│       ├── dal/          # Data Access Layer (brandkits, tokens, users)
+│       ├── email/        # Email services and transport configuration
+│       ├── env/          # Environment variable configuration
+│       ├── queue/        # BullMQ job processing and schemas
+│       ├── redis/        # Redis connection management
+│       ├── stripe/       # Payment processing utilities
+│       └── worker/       # Background job workers
+├── AGENTS.md             # AI agent development guide
+```
 
+
+## Documentation for the AI Agent
+
+- The AI Agent should refer to the README.md for overall project understanding, setup instructions, and development guidelines.
+- If the AI Agent needs more specific documentation, it should check the `/docs/` directory for additional resources on component patterns, Better Auth usage, and other relevant topics.
 
 ## Coding Conventions for AI Agents
 
@@ -65,15 +109,6 @@ The `/docs/better-auth.md` file contains Better Auth's LLM-specific documentatio
 - the AI Agent should use custom CSS only when necessary
 - the AI Agent should always use the custom Tailwind theme colors defined in /src/app/globals.css
 - the AI Agent should use tailwind-variants when making new reusable components
-
-## Testing Requirements for AI Agents
-
-the AI Agent should run tests with the following commands:
-
-```bash
-# Run all tests with the AI Agent
-npm test
-```
 
 ## Pull Request Guidelines for AI Agents
 
