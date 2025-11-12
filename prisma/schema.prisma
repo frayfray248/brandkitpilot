@@ -65,7 +65,12 @@ model BrandKit {
     user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     title     String
     status    BrandKitStatus @default(PENDING)
-    outputs   Json
+    outputs   BrandKitOutputSection[]
+}
+
+type BrandKitOutputSection {
+    title   String
+    content String
 }
 
 
@@ -74,6 +79,39 @@ enum BrandKitStatus {
     COMPLETED
     FAILED
 }
+
+model BrandFramework {
+    id             String   @id @default(auto()) @map("_id") @db.ObjectId
+    slug           String @unique
+    name           String
+    description    String
+    inputFields    BrandFrameworkInputField[]
+    outputSections BrandFrameworkOutputSection[]
+    createdAt      DateTime @default(now())
+
+    @@map("brand_framework")
+}
+
+type BrandFrameworkInputField {
+    fieldId      String
+    label       String
+    type        BrandFrameworkInputType
+    placeholder String
+    helpText    String?
+}
+
+type BrandFrameworkOutputSection {
+    title       String
+    description String?
+}
+
+enum BrandFrameworkInputType {
+    TEXT
+    TEXTAREA
+    NUMBER
+}
+
+
 
 model Session {
   id        String   @id @map("_id")
