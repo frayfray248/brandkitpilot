@@ -20,7 +20,9 @@ This Agents.md file provides comprehensive guidance for the OpenAI Codex, GitHub
 ├── docs/                  # Project documentation
 ├── generated/             # Generated code
 │   └── prisma/           # Generated Prisma client
-├── prisma/               # Database schema and migrations
+├── prisma/               # Database schema and scripts
+|   ├── schema.prisma     # Prisma schema definition
+|   └── seed.ts           # Database seeding script
 ├── public/               # Static assets
 ├── src/
 │   ├── app/              # Next.js App Router pages
