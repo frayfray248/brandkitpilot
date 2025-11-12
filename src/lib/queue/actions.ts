@@ -9,7 +9,7 @@ export const startGenerateBrandKitJob = async (data : unknown) => {
 
     const parsedData: BrandKitRequestData = BrandKitRequestDataSchema.parse(data)
 
-    const createdBrandKit = await createBrandKit(parsedData.userId, parsedData.title)
+    const createdBrandKit = await createBrandKit(parsedData.userId, "New Brand Kit")
 
     // Get queue instance with shared Redis connection
     const queue = await getBrandkitQueue()
