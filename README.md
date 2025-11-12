@@ -126,11 +126,19 @@ EMAIL_FROM="noreply@brandkitpilot.com"
    npm run containers:build-dev
    ```
 
-5. **Start development services**
+5. **Start development containers**
    ```bash
-   # Start MongoDB and Redis with Docker
    npm run containers:start-dev
-   
+   ```
+
+6. **Seed the database**
+   ```bash
+   # Required. Otherwise, no BrandFrameworks will exist.
+   npm run db:seed
+   ```
+
+7. **Start development services**
+   ```bash
    # Start the development server
    npm run dev
    
@@ -153,6 +161,7 @@ EMAIL_FROM="noreply@brandkitpilot.com"
 - `npm run storybook` - Launch Storybook component explorer
 - `npm run containers:start-dev` - Start Docker services (MongoDB, Redis)
 - `npm run schema:generate` - Generate Prisma client
+- `npm run db:seed` - Seed the database with initial data
 
 ### Architecture Patterns
 
