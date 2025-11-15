@@ -17,6 +17,8 @@ const createUser = async (name: string, email: string) => {
 
     } catch (error) {
 
+        console.log(error instanceof Error ? error.message : error)
+
         if (error instanceof APIError) {
 
             // message comparison until better-auth exports the correct error code
@@ -25,6 +27,7 @@ const createUser = async (name: string, email: string) => {
             }
 
         } else {
+
             throw new Error("Failed to create user")
         }
     }
