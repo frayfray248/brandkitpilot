@@ -49,6 +49,9 @@ BrandKitPilot is an AI-powered brand strategy platform that helps businesses cre
 - **Nodemailer**: Email composition and delivery
 
 ### Development & Testing
+- **Playwright**: End-to-end testing with real browser automation
+- **Testmail.app**: Real email testing for magic link authentication
+- **Docker Testing**: Isolated test environment with containerized execution
 - **Storybook**: Component development and documentation
 - **ESLint**: Code linting with Next.js configuration
 - **Husky**: Git hooks for pre-commit validation
@@ -154,12 +157,20 @@ EMAIL_FROM="noreply@brandkitpilot.com"
 
 ### Available Scripts
 
+#### Development
 - `npm run dev` - Start Next.js development server with Turbopack
 - `npm run build` - Build production application
 - `npm run start` - Start production server
 - `npm run worker:start-dev` - Start background job worker
 - `npm run storybook` - Launch Storybook component explorer
+
+#### Testing
+- `npm run test` - Run E2E tests in Docker container
+- `npm run containers:build-test` - Build Playwright test container
+
+#### Database & Containers
 - `npm run containers:start-dev` - Start Docker services (MongoDB, Redis)
+- `npm run containers:stop-dev` - Stop Docker services
 - `npm run schema:generate` - Generate Prisma client
 - `npm run db:seed` - Seed the database with initial data
 
@@ -170,6 +181,7 @@ EMAIL_FROM="noreply@brandkitpilot.com"
 - **Queue Processing**: Background jobs processed through BullMQ with Redis
 - **Authentication**: Better Auth handles all authentication flows
 - **Component Design**: Follow patterns documented in `/docs/component-patterns.md`
+- **E2E Testing**: Docker-based Playwright tests with real email verification - see `/tests/README.md`
 
 ## 🔐 Security Features
 
@@ -190,6 +202,28 @@ The application includes comprehensive logging and monitoring:
 - **Performance Monitoring**: Job processing times and system health
 - **User Analytics**: Token usage and brand kit generation patterns
 
+## 🧪 Testing
+
+The application includes comprehensive E2E testing using Playwright:
+
+- **Docker-based Execution**: Tests run in isolated containers for consistency
+- **Real Email Testing**: Integration with Testmail.app for magic link verification
+- **Global Setup**: Automatic database seeding before test runs
+- **Page Object Model**: Maintainable test structure with reusable components
+- **CI/CD Ready**: Configured for automated testing in pipelines
+
+For detailed testing documentation, see [`/tests/README.md`](/tests/README.md).
+
+### Running Tests
+
+```bash
+# Build test container (first time)
+npm run containers:build-test
+
+# Run all tests
+npm run test
+```
+
 ## 🚢 Deployment
 
 ### Production Checklist
@@ -200,6 +234,7 @@ The application includes comprehensive logging and monitoring:
 - [ ] Configure AWS SES for production emails
 - [ ] Set up monitoring and alerting
 - [ ] Configure domain and SSL certificates
+- [ ] Run E2E tests against staging environment
 
 ### Scaling Considerations
 - **Horizontal Scaling**: Multiple worker instances for job processing

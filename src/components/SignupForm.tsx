@@ -52,6 +52,7 @@ const SignupForm: React.FC = () => {
                 helperText={success ? "Signup successful. Please check your email for a sign-in link." : undefined}
             >
                 <InputField
+                    name="name"
                     type="text"
                     value={name}
                     onChange={e => setName(e.target.value)}
@@ -61,6 +62,7 @@ const SignupForm: React.FC = () => {
                     autoComplete="name"
                 />
                 <InputField
+                    name="email"
                     type="email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}

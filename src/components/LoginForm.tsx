@@ -49,6 +49,7 @@ const LoginForm: React.FC = () => {
                 helperText={success ? "Magic link sent! Check your email." : undefined}
             >
                 <InputField
+                    name="email"
                     type="email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
