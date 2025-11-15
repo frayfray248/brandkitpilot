@@ -21,97 +21,94 @@ model User {
   updatedAt     DateTime
   sessions      Session[]
   accounts      Account[]
-  role       String?
-  banned     Boolean?  @default(false)
-  banReason  String?
-  banExpires DateTime?
+  role          String?
+  banned        Boolean?  @default(false)
+  banReason     String?
+  banExpires    DateTime?
 
   // app fields
-  tokens        Int      @default(0)
+  tokens            Int                @default(0)
   tokenTransactions TokenTransaction[]
-  termsAccepted TermsAccepted
-  brandKits     BrandKit[]
+  termsAccepted     TermsAccepted
+  brandKits         BrandKit[]
 
   @@unique([email])
   @@map("user")
 }
 
 type TermsAccepted {
-    timestamp DateTime  @default(now())
-    version   String    @default("")
+  timestamp DateTime @default(now())
+  version   String   @default("")
 }
 
 model TokenTransaction {
-    id        String   @id @default(auto()) @map("_id") @db.ObjectId
-    userId    String
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    type      TokenTransactionType
-    tokens    Int
-    stripeSessionId String?
-    createdAt DateTime @default(now())
+  id              String               @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String
+  user            User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type            TokenTransactionType
+  tokens          Int
+  stripeSessionId String?
+  createdAt       DateTime             @default(now())
 
-    @@unique([stripeSessionId])
-    @@map("token_transaction")
+  @@unique([stripeSessionId])
+  @@map("token_transaction")
 }
 
 enum TokenTransactionType {
-    PURCHASE
-    CONSUME
+  PURCHASE
+  CONSUME
 }
 
 model BrandKit {
-    id        String   @id @default(auto()) @map("_id") @db.ObjectId
-    userId    String
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    title     String
-    status    BrandKitStatus @default(PENDING)
-    outputs   BrandKitOutputSection[]
+  id      String                  @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String
+  user    User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title   String
+  status  BrandKitStatus          @default(PENDING)
+  outputs BrandKitOutputSection[]
 }
 
 type BrandKitOutputSection {
-    title   String
-    content String
+  title   String
+  content String
 }
 
-
 enum BrandKitStatus {
-    PENDING
-    COMPLETED
-    FAILED
+  PENDING
+  COMPLETED
+  FAILED
 }
 
 model BrandFramework {
-    id             String   @id @default(auto()) @map("_id") @db.ObjectId
-    slug           String @unique
-    name           String
-    description    String
-    inputFields    BrandFrameworkInputField[]
-    outputSections BrandFrameworkOutputSection[]
-    createdAt      DateTime @default(now())
+  id             String                        @id @default(auto()) @map("_id") @db.ObjectId
+  slug           String                        @unique
+  name           String
+  description    String
+  inputFields    BrandFrameworkInputField[]
+  outputSections BrandFrameworkOutputSection[]
+  createdAt      DateTime                      @default(now())
 
-    @@map("brand_framework")
+  @@map("brand_framework")
 }
 
 type BrandFrameworkInputField {
-    fieldId      String
-    label       String
-    type        BrandFrameworkInputType
-    placeholder String
-    helpText    String?
+  fieldId     String
+  label       String
+  type        BrandFrameworkInputType
+  placeholder String
+  helpText    String?
 }
 
 type BrandFrameworkOutputSection {
-    title       String
-    description String?
+  title       String
+  description String?
 }
 
 enum BrandFrameworkInputType {
-    TEXT
-    TEXTAREA
-    NUMBER
+  TEXT
+  TEXTAREA
+  NUMBER
 }
-
-
 
 model Session {
   id        String   @id @map("_id")

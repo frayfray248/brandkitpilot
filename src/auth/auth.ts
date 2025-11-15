@@ -11,6 +11,9 @@ export const auth = betterAuth({
     database: prismaAdapter(prisma, {
         provider: "mongodb"
     }),
+    emailAndPassword: {
+        enabled: false
+    },
     session: {
         expiresIn: SESSION_EXPIRY_LENGTH,
         updateAge: SESSION_UPDATE_AGE_LENGTH
@@ -21,8 +24,8 @@ export const auth = betterAuth({
                 await sendEmail(email, `${serverEnv.APP_NAME}: Signin link`, `Click here to sign in: ${url}. This link will expire in ${MAGIC_LINK_EXPIRY_LENGTH / 60} minutes.`);
             },
             expiresIn: MAGIC_LINK_EXPIRY_LENGTH,
-            disableSignUp: true
+            disableSignUp: false
         }),
         admin()
-    ]
+    ],
 });

@@ -44,3 +44,7 @@ next-env.d.ts
 storybook-static
 
 /generated/prisma
+
+# playwright
+/test-results/
+/playwright-report/
