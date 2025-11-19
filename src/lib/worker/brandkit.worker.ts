@@ -1,5 +1,6 @@
-import { generateSlogan } from "@/lib/ai/openai";
-import { updateBrandKit } from "@/lib/dal/brandkits";
+import { generateBrandKit, generateSlogan } from "@/lib/ai/openai";
+import { getFrameworkBySlug } from "@/lib/dal/brandFrameworks";
+import { updateBrandKitById } from "@/lib/dal/brandkits";
 import { BRANDKIT_QUEUE_NAME } from "@/lib/queue/const";
 import { BrandKitRequestData } from "@/lib/queue/schemas";
 import { getRedisConnection, closeRedisConnection } from "@/lib/redis/connection";
@@ -12,7 +13,7 @@ const startWorker = async () => {
     try {
         console.log('🔄 Initializing worker with shared Redis connection...');
         const connection = await getRedisConnection();
-        
+
         const worker = new Worker(BRANDKIT_QUEUE_NAME, async job => {
 
             const startTime = Date.now()
@@ -28,23 +29,28 @@ const startWorker = async () => {
                     throw new Error("Missing brandKitId in job data");
                 }
 
-                if (!data.title?.trim()) {
-                    throw new Error("Missing or empty title in job data");
-                }
-
                 brandKitId = data.brandKitId;
 
-                const slogan = await generateSlogan(data.title);
+                const framework = await getFrameworkBySlug(data.frameworkSlug);
 
-                if (!slogan?.trim()) {
-                    throw new Error("Failed to generate slogan - empty result");
+                if (!framework) {
+                    throw new Error(`Framework not found: ${data.frameworkSlug}`);
                 }
 
-                const createdBrandKit = await updateBrandKit(
+                const response = await generateBrandKit(framework, data.inputs);
+
+                if (!response) {
+                    throw new Error("No response from generateBrandKit");
+                }
+                if (!response.sections) {
+                    throw new Error("No sections in response from generateBrandKit");
+                }
+
+                const createdBrandKit = await updateBrandKitById(
                     data.brandKitId,
-                    "COMPLETED",
                     {
-                        "0": slogan
+                        status: "COMPLETED",
+                        outputs: Object.entries(response.sections).map(([title, content]) => ({ title, content }))
                     }
                 );
 
@@ -57,10 +63,11 @@ const startWorker = async () => {
                 console.error("Error processing job:", job.id, error);
 
                 if (brandKitId) {
-                    await updateBrandKit(
+                    await updateBrandKitById(
                         brandKitId,
-                        "FAILED",
-                        {}
+                        {
+                            status: "FAILED",
+                        }
                     );
                 }
                 throw error;

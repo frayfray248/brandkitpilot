@@ -1,16 +1,16 @@
 import prisma from "@/db/db";
-import { BrandKitStatus } from "../../../generated/prisma";
+import { BrandKit, BrandKitStatus } from "../../../generated/prisma";
 import { checkServerAuth } from "@/lib/auth/server/session";
 import { headers } from "next/headers";
-import { JsonObject } from "@prisma/client/runtime/library";
+import { JsonObject, InputJsonValue } from "@prisma/client/runtime/library";
 
-export const createBrandKit = async (userId: string, title: string) => {
+export const createBrandKit = async (userId: string, title: string): Promise<BrandKit> => {
 
     const createdBrandKit = await prisma.brandKit.create({
         data: {
             userId,
             title,
-            outputs: {}
+            outputs: []
         }
     });
 
@@ -18,23 +18,23 @@ export const createBrandKit = async (userId: string, title: string) => {
 
 }
 
-export const updateBrandKit = async (brandKitId: string, status: BrandKitStatus, outputs: JsonObject) => {
+export const updateBrandKitById = async (
+    brandKitId: string, 
+    updates: Partial<Omit<BrandKit, "id" | "userId">>
+): Promise<BrandKit> => {
 
     const updatedBrandKit = await prisma.brandKit.update({
         where: {
             id: brandKitId
         },
-        data: {
-            status,
-            outputs
-        }
+        data: updates
     });
 
     return updatedBrandKit;
 
 }
 
-export const getBrandKitById = async (getBrandKitId: string) => {
+export const getBrandKitById = async (getBrandKitId: string): Promise<BrandKit | null> => {
 
     await checkServerAuth(headers)
 
@@ -48,7 +48,7 @@ export const getBrandKitById = async (getBrandKitId: string) => {
 
 }
 
-export const getAllBrandKitsByUserId = async (userId: string) => {
+export const getAllBrandKitsByUserId = async (userId: string): Promise<BrandKit[]> => {
 
     const session = await checkServerAuth(headers)
 
