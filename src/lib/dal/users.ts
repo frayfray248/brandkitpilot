@@ -1,7 +1,8 @@
 "use server"
 
 import prisma from "@/db/db"
-import { checkServerAuth } from "@/lib/auth/server/session"
+import { checkAdminAuth, checkServerAuth } from "@/lib/auth/server/session"
+import { DEFAULT_ROLE } from "@/lib/auth/roles"
 import { headers } from "next/headers"
 
 export const getUser = async () => {
@@ -33,4 +34,43 @@ export const userAcceptTerms = async (version: string) => {
     })
 
     return user
+}
+
+// Admin view functions
+
+/**
+ * Get all users (admin only) - for admin dashboard viewing
+ */
+export const getAllUsers = async () => {
+   
+    await checkAdminAuth(headers)
+
+    const users = await prisma.user.findMany({
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            createdAt: true,
+            tokens: true,
+            banned: true,
+            banReason: true,
+            banExpires: true
+        },
+        orderBy: {
+            createdAt: 'desc'
+        }
+    })
+
+    return users
+}
+
+/**
+ * Get total user count (admin only)
+ */
+export const getUserCount = async () => {
+    await checkAdminAuth(headers)
+
+    const count = await prisma.user.count()
+    return count
 }
