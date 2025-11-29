@@ -84,6 +84,7 @@ model BrandFramework {
   slug           String                        @unique
   name           String
   description    String
+  promptContext  String?                        
   inputFields    BrandFrameworkInputField[]
   outputSections BrandFrameworkOutputSection[]
   createdAt      DateTime                      @default(now())

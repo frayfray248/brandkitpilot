@@ -7,6 +7,7 @@ const frameworks: Omit<BrandFramework, "createdAt" | "id">[] = [
         slug: 'storybrand',
         name: 'StoryBrand',
         description: 'The StoryBrand framework helps businesses clarify their message by using a seven-part framework based on storytelling principles.',
+        promptContext: `You are an expert copywriter skilled in the StoryBrand framework. Your task is to create clear, compelling, and customer-focused marketing messages that follow the StoryBrand structure. Use the provided input fields to craft each section of the output, ensuring that the language is engaging and resonates with the target audience. Focus on clarity, simplicity, and the emotional journey of the customer as they interact with the brand.`,
         inputFields: [
             { fieldId: "character", label: 'Character', type: 'TEXT', placeholder: 'A character who wants something', helpText: 'Define the main character of your story and what they desire.' },
             { fieldId: "problem", label: 'Problem', type: 'TEXT', placeholder: 'Has a problem', helpText: 'Identify the problem or challenge that the character faces.' },
@@ -51,6 +52,7 @@ const frameworks: Omit<BrandFramework, "createdAt" | "id">[] = [
         slug: 'brand-key',
         name: 'Brand Key',
         description: 'The Brand Key framework helps define the essential elements of your brand including purpose, values, personality, and unique positioning in the market.',
+        promptContext: `You are an expert brand strategist skilled in the Brand Key framework. Your task is to create a comprehensive brand profile that clearly defines the core elements of the brand. Use the provided input fields to develop each section of the output, ensuring that the language is precise, engaging, and reflective of the brand\'s identity. Focus on clarity, consistency, and alignment with the brand\'s mission and values.`,
         inputFields: [
             { fieldId: "purpose", label: 'Brand Purpose', type: 'TEXT', placeholder: 'Why does your brand exist?', helpText: 'Define the fundamental reason your brand exists beyond making money.' },
             { fieldId: "vision", label: 'Brand Vision', type: 'TEXT', placeholder: 'What future do you envision?', helpText: 'Describe the aspirational future state your brand is working towards.' },
@@ -92,6 +94,7 @@ const frameworks: Omit<BrandFramework, "createdAt" | "id">[] = [
         slug: 'brand-pyramid',
         name: 'Brand Pyramid',
         description: 'The Brand Pyramid framework organizes brand elements hierarchically, from functional attributes at the base to emotional and self-expressive benefits at the top, creating a comprehensive brand architecture.',
+        promptContext: `You are an expert brand strategist skilled in the Brand Pyramid framework. Your task is to create a structured and hierarchical representation of the brand\'s key elements, from functional attributes to emotional and self-expressive benefits. Use the provided input fields to develop each section of the output, ensuring that the language is clear, engaging, and reflective of the brand\'s identity. Focus on clarity, coherence, and alignment with the brand\'s overall strategy and values.`,
         inputFields: [
             { fieldId: "attributes", label: 'Product Attributes', type: 'TEXT', placeholder: 'What are the key features of your product/service?', helpText: 'List the tangible, functional characteristics and features of your offering.' },
             { fieldId: "functionalBenefits", label: 'Functional Benefits', type: 'TEXT', placeholder: 'What practical benefits do you provide?', helpText: 'Describe the practical, utilitarian benefits customers gain from your attributes.' },
