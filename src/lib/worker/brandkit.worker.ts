@@ -1,4 +1,4 @@
-import { generateBrandKit, generateSlogan } from "@/lib/ai/openai";
+import { generateBrandKit } from "@/lib/ai/responses";
 import { getFrameworkBySlug } from "@/lib/dal/brandFrameworks";
 import { updateBrandKitById } from "@/lib/dal/brandkits";
 import { BRANDKIT_QUEUE_NAME } from "@/lib/queue/const";

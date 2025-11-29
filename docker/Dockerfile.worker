@@ -16,7 +16,7 @@ COPY src ./src
 RUN npm install -g tsx
 
 RUN mkdir -p ./generated/prisma
-RUN npm run schema:generate
+RUN npm run schema:generate-dev
 
 # Copy the rest of the source code and other files
 COPY . .
