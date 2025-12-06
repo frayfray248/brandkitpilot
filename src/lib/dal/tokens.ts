@@ -1,5 +1,8 @@
 import prisma from "@/db/db"
 
+// temporary conversion rate
+export const TOKENS_PER_USD = 4000;
+
 export const addTokensToUser = async (
     userId: string,
     tokens: number,
@@ -20,6 +23,28 @@ export const addTokensToUser = async (
             }
         })
     ])
+}
+
+export const deductTokensFromUser = async (
+    userId: string,
+    tokens: number,
+) => {
+
+
+    await prisma.$transaction([
+        prisma.user.update({
+            where: { id: userId },
+            data: { tokens: { decrement: tokens } }
+        }),
+        prisma.tokenTransaction.create({
+            data: {
+                userId,
+                type: "CONSUME",
+                tokens,
+            }
+        })
+    ])
+
 }
 
 export const stripeTransactionExists = async (stripeSessionId: string) => {

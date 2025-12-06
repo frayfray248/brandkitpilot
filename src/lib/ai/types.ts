@@ -12,3 +12,8 @@ export type BrandKitOutput = {
     title: string;
     sections: Record<string, string>;
 };
+
+export type AIResponse<T> = {
+    output: T;
+    cost: number;
+}
