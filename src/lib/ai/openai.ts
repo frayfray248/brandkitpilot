@@ -1,4 +1,5 @@
 import { OpenAIModel } from "@/lib/ai/types";
+import { calculateTokenCost } from "@/lib/ai/utils";
 import serverEnv from "@/lib/env/serverEnv";
 import OpenAI from "openai";
 import { AutoParseableTextFormat } from "openai/lib/parser";
@@ -19,11 +20,8 @@ export const createStructuredOutputResponse = async <T>(
         }
     });
 
-    if (!response.output_parsed) {
-        throw new Error("No parsed output received from OpenAI");
-    }
-    
+    return response;
 
-    return response.output_parsed;
+
 
 }

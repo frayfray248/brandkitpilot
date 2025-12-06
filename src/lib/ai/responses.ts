@@ -1,10 +1,11 @@
 import { BrandFramework } from "@/generated/prisma";
 import { OPENAI_MODEL } from "@/lib/ai/const";
 import { createBrandKitPrompt } from "@/lib/ai/prompts";
-import { BrandKitInput, BrandKitOutput } from "@/lib/ai/types";
+import { AIResponse, BrandKitInput, BrandKitOutput } from "@/lib/ai/types";
 import { zodTextFormat } from "openai/helpers/zod.mjs";
 import z from "zod";
 import { createStructuredOutputResponse } from "@/lib/ai/openai";
+import { calculateTokenCost } from "@/lib/ai/utils";
 
 // Creates dynamic Zod schema based on the framework's output sections
 export const createBrandKitResponseSchema = (framework: BrandFramework) => {
@@ -21,10 +22,10 @@ export const createBrandKitResponseSchema = (framework: BrandFramework) => {
 
 }
 
-export const generateBrandKit = async (
+export const createBrandKitResponse = async (
     framework: BrandFramework,
     inputs: BrandKitInput[]
-): Promise<BrandKitOutput> => {
+): Promise<AIResponse<BrandKitOutput>> => {
 
     // Validate inputs
     if (!inputs.length) {
@@ -42,15 +43,39 @@ export const generateBrandKit = async (
 
     const format = zodTextFormat(responseSchema, "brand_kit");
 
+    const model = OPENAI_MODEL;
+
     try {
 
         const response = await createStructuredOutputResponse<BrandKitOutput>(
-            OPENAI_MODEL,
+            model,
             prompt,
             format
         );
 
-        return response;
+        if (!response.output_parsed) {
+            throw new Error("No parsed output received from OpenAI");
+        }
+
+        if (!response.usage) {
+            throw new Error("No usage data received from OpenAI");
+        }
+
+        console.log("OpenAI Usage:", JSON.stringify(response.usage, null, 2));
+
+        const cost = calculateTokenCost(
+            model,
+            response.usage.input_tokens,
+            response.usage.input_tokens_details.cached_tokens,
+            response.usage.output_tokens
+        );
+
+        console.log(`OpenAI Cost for this request: $${cost.toFixed(6)}`);
+
+        return {
+            output: response.output_parsed,
+            cost
+        }
 
     } catch (error) {
         console.error("OpenAI generation error:", error);
