@@ -70,11 +70,19 @@ BrandKitPilot is an AI-powered brand strategy platform that helps businesses cre
 
 ### Environment Setup
 
-Create a `.env.local` file with the following variables:
+The project uses environment-specific configuration files for local development:
+
+- `.env.development.local` - Development environment variables
+- `.env.production.local` - Production build testing variables
+- `.env.test.local` - Testing environment variables
+
+**Note:** These `.env.*.local` files are for local development only. Deployed instances should use host-defined environment variables (e.g., Vercel environment variables, AWS Parameter Store, etc.) rather than `.env` files.
+
+Create your environment files with the following variables:
 
 ```bash
 # Node Environment
-NODE_ENV="development"
+NODE_ENV="development"  # or "production" or "test"
 
 # Application Configuration
 APP_NAME="BrandKitPilot"
@@ -119,37 +127,36 @@ EMAIL_FROM="noreply@brandkitpilot.com"
    npm install
    ```
 
-3. **Generate Prisma client**
+3. **Generate Prisma client and Better Auth**
    ```bash
-   npm run schema:generate
+   npm run generate
    ```
 
-4. **Build development containers**
+4. **Seed the database**
    ```bash
-   npm run containers:build-dev
+   npm run seed
    ```
 
-5. **Start development containers**
+5. **Build Docker services**
    ```bash
-   npm run containers:start-dev
+   npm run build-services
    ```
 
-6. **Seed the database**
+6. **Start Docker services (MongoDB & Redis)**
    ```bash
-   # Required. Otherwise, no BrandFrameworks will exist.
-   npm run db:seed
-   ```
-
-7. **Start development services**
-   ```bash
-   # Start the development server
-   npm run dev
+   # Option 1: Start in detached mode (background)
+   npm run start-services detached
    
-   # Start the worker process (in another terminal)
-   npm run worker:start-dev
+   # Option 2: Start in a separate terminal window
+   npm run start-services
    ```
 
-6. **Access the application**
+7. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+8. **Access the application**
    - Web app: http://localhost:3000
    - Storybook: http://localhost:6006 (run `npm run storybook`)
 
@@ -161,18 +168,22 @@ EMAIL_FROM="noreply@brandkitpilot.com"
 - `npm run dev` - Start Next.js development server with Turbopack
 - `npm run build` - Build production application
 - `npm run start` - Start production server
-- `npm run worker:start-dev` - Start background job worker
 - `npm run storybook` - Launch Storybook component explorer
 
 #### Testing
-- `npm run test` - Run E2E tests in Docker container
-- `npm run containers:build-test` - Build Playwright test container
+- `npm run test` - Build services, run E2E tests in Docker, then cleanup
 
-#### Database & Containers
-- `npm run containers:start-dev` - Start Docker services (MongoDB, Redis)
-- `npm run containers:stop-dev` - Stop Docker services
-- `npm run schema:generate` - Generate Prisma client
-- `npm run db:seed` - Seed the database with initial data
+#### Code Generation
+- `npm run generate` - Generate Prisma client and Better Auth schemas
+- `npm run generate noauth` - Generate only Prisma client (skip Better Auth)
+
+#### Services & Database
+- `npm run build-services` - Build Docker services (MongoDB, Redis)
+- `npm run start-services` - Start Docker services
+- `npm run start-services detached` - Start services in background
+- `npm run start-services --test` - Start services with test environment (automatically run by `npm run test`)
+- `npm run stop-services` - Stop Docker services
+- `npm run seed` - Seed the database with initial data
 
 ### Architecture Patterns
 
@@ -217,12 +228,16 @@ For detailed testing documentation, see [`/tests/README.md`](/tests/README.md).
 ### Running Tests
 
 ```bash
-# Build test container (first time)
-npm run containers:build-test
-
-# Run all tests
+# Run all tests (automatically builds services, runs tests in Docker, and cleans up)
 npm run test
 ```
+
+The test script automatically:
+1. Builds Docker services
+2. Starts services in detached mode
+3. Builds the Playwright test container
+4. Runs tests with test environment configuration
+5. Stops all services after completion
 
 ## 🚢 Deployment
 

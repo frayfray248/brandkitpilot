@@ -11,15 +11,19 @@ RUN npm install
 # Copy only files needed for schema generation
 COPY prisma ./prisma
 COPY src ./src
+COPY scripts ./scripts
 
 # Install tsx globally for TypeScript execution (required for running TypeScript files directly)
 RUN npm install -g tsx
 
 RUN mkdir -p ./generated/prisma
-RUN npm run schema:generate-dev
+RUN sh ./scripts/generate.sh noauth
 
 # Copy the rest of the source code and other files
 COPY . .
 
+# Make the start script executable
+RUN chmod +x ./scripts/start-worker.sh
+
 # Run the worker
-CMD ["npm", "run", "worker:start-dev"]
+ENTRYPOINT ["sh", "./scripts/start-worker.sh"]

@@ -7,7 +7,7 @@ setup('Seed test database', async ({ }) => {
         try {
 
             // Run seed script to populate test data
-            execSync('npm run db:seed-test', { stdio: 'pipe' });
+            execSync('npm run seed', { stdio: 'pipe' });
 
             console.log('✅ Test database setup completed');
         } catch (error) {

@@ -84,7 +84,7 @@ model BrandFramework {
   slug           String                        @unique
   name           String
   description    String
-  promptContext  String?                        
+  promptContext  String?
   inputFields    BrandFrameworkInputField[]
   outputSections BrandFrameworkOutputSection[]
   createdAt      DateTime                      @default(now())
@@ -126,6 +126,7 @@ model Session {
 
   @@unique([token])
   @@map("session")
+  @@index([userId])
 }
 
 model Account {
@@ -145,6 +146,7 @@ model Account {
   updatedAt             DateTime
 
   @@map("account")
+  @@index([userId])
 }
 
 model Verification {
@@ -156,4 +158,5 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+  @@index([identifier])
 }

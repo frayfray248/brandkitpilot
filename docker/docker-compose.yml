@@ -18,7 +18,7 @@ services:
       - app-network
     depends_on:
       - memory-cache
-    env_file: ../.env.development.local
+    env_file: ${ENV_FILE}
     environment:
       - REDIS_URL=redis://memory-cache:6379
     volumes:
