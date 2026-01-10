@@ -4,7 +4,7 @@ import { sendEmail } from "@/lib/email";
 import serverEnv from "@/lib/env/serverEnv";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { admin, magicLink } from "better-auth/plugins";
+import { admin, magicLink, openAPI } from "better-auth/plugins";
 
 export const auth = betterAuth({
     telemetry: { enabled: false },
@@ -19,6 +19,7 @@ export const auth = betterAuth({
         updateAge: SESSION_UPDATE_AGE_LENGTH
     },
     plugins: [
+        openAPI(),
         magicLink({
             sendMagicLink: async ({ email, url}) => {
                 await sendEmail(email, `${serverEnv.APP_NAME}: Signin link`, `Click here to sign in: ${url}. This link will expire in ${MAGIC_LINK_EXPIRY_LENGTH / 60} minutes.`);

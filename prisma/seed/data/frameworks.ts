@@ -1,6 +1,4 @@
-import { BrandFramework, PrismaClient } from "../generated/prisma";
-const prisma = new PrismaClient();
-
+import { BrandFramework } from "@/generated/prisma";
 
 const frameworks: Omit<BrandFramework, "createdAt" | "id">[] = [
     {
@@ -133,28 +131,4 @@ const frameworks: Omit<BrandFramework, "createdAt" | "id">[] = [
     }
 ]
 
-
-const main = async () => {
-
-    for (const framework of frameworks) {
-        const existing = await prisma.brandFramework.upsert({
-            where: { slug: framework.slug },
-            update: {},
-            create: {
-                ...framework,
-            }
-        });
-        console.log(`Upserted framework: ${existing.slug}`);
-    }
-};
-
-    ; (async () => {
-        try {
-            await main();
-            await prisma.$disconnect();
-        } catch (error) {
-            console.error(error);
-            await prisma.$disconnect();
-            process.exit(1);
-        }
-    })();
+export default frameworks;
