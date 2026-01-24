@@ -1,7 +1,7 @@
 ---
 agent: 'agent'
 model: Claude Sonnet 4
-tools: ['runCommands', 'edit', 'search', 'notionApi/*', 'usages', 'vscodeAPI', 'problems', 'changes', 'openSimpleBrowser', 'githubRepo']
+tools: ['execute/getTerminalOutput', 'execute/runInTerminal', 'read/terminalLastCommand', 'read/terminalSelection', 'edit', 'search', 'notionApi/*', 'search/usages', 'vscode/vscodeAPI', 'read/problems', 'search/changes', 'vscode/openSimpleBrowser', 'web/githubRepo']
 description: 'Project-agnostic Notion Task Creation Assistant'
 ---
 
