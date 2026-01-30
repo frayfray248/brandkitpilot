@@ -50,7 +50,7 @@ BrandKitPilot is an AI-powered brand strategy platform that helps businesses cre
 
 ### Development & Testing
 - **Playwright**: End-to-end testing with real browser automation
-- **Testmail.app**: Real email testing for magic link authentication
+- **Mailpit**: Local email testing server for magic link authentication
 - **Docker Testing**: Isolated test environment with containerized execution
 - **Storybook**: Component development and documentation
 - **ESLint**: Code linting with Next.js configuration
@@ -218,7 +218,7 @@ The application includes comprehensive logging and monitoring:
 The application includes comprehensive E2E testing using Playwright:
 
 - **Docker-based Execution**: Tests run in isolated containers for consistency
-- **Real Email Testing**: Integration with Testmail.app for magic link verification
+- **Real Email Testing**: Local Mailpit instance for magic link verification
 - **Global Setup**: Automatic database seeding before test runs
 - **Page Object Model**: Maintainable test structure with reusable components
 - **CI/CD Ready**: Configured for automated testing in pipelines

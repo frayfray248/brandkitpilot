@@ -21,6 +21,16 @@ services:
       timeout: 10s
       retries: 5
       start_period: 30s
+  mailpit-test:
+    image: axllent/mailpit
+    container_name: mailpit-test
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    profiles:
+      - test
+    networks:
+      - app-network
 
   memory-cache:
     image: valkey/valkey:latest
