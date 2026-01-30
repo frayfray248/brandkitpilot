@@ -1,4 +1,5 @@
 import { test, expect } from '../fixtures';
+import { waitForMagicLink } from '../helpers/email';
 import { SignupPage, AuthHelper, LoginPage } from '../index';
 
 test.describe('Magic Link Signup Flow', () => {
@@ -12,27 +13,28 @@ test.describe('Magic Link Signup Flow', () => {
         loginPage = new LoginPage(page);
     });
 
-    test('should handle signup email with magic link', async ({ page, testUser, testEmail }) => {
+    test('should handle signup email with magic link', async ({ page, testUser }) => {
 
         const now = Date.now();
         await signupPage.goto();
         await signupPage.signup(testUser.name, testUser.email);
 
-        const magicLink = await testEmail.waitForMagicLink(now, 30000);
+        const magicLink = await waitForMagicLink(now, 30000);
 
         // Navigate to the magic link
         await page.goto(magicLink);
+
 
         const isLoggedIn = await authHelper.isLoggedIn();
         expect(isLoggedIn).toBe(true);
     });
 
-    test('should handle signin email with magic link', async ({ page, testUser, testEmail }) => {
+    test('should handle signin email with magic link', async ({ page, testUser }) => {
         const now = Date.now();
         await loginPage.goto();
         await loginPage.login(testUser.email);
 
-        const magicLink = await testEmail.waitForMagicLink(now, 30000);
+        const magicLink = await waitForMagicLink(now, 30000);
 
         // Navigate to the magic link
         await page.goto(magicLink);
