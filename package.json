@@ -23,7 +23,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@aws-sdk/client-sesv2": "^3.882.0",
+    "@aws-sdk/client-sesv2": "^3.893.0",
     "@next/env": "^16.0.5",
     "@prisma/client": "6.19",
     "@stripe/stripe-js": "^7.9.0",
@@ -31,7 +31,7 @@
     "bullmq": "^5.61.0",
     "dotenv": "^17.2.3",
     "ioredis": "^5.8.1",
-    "next": "^15.5.3",
+    "next": "^16.1.6",
     "nodemailer": "^7.0.6",
     "openai": "^6.7.0",
     "react": "19.1.0",

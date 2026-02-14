@@ -1,4 +1,7 @@
+import { getDatabaseUrl } from '@/db/utils';
 import { defineConfig, devices } from '@playwright/test';
+
+process.env.DATABASE_URL = getDatabaseUrl();
 
 /**
  * @see https://playwright.dev/docs/test-configuration
