@@ -1,7 +1,7 @@
 ---
 agent: 'agent'
 model: Claude Sonnet 4
-tools: ['codebase', 'usages', 'problems', 'changes', 'openSimpleBrowser', 'searchResults', 'githubRepo', 'editFiles', 'search', 'runCommands']
+tools: [vscode, execute, read, agent, edit, search, web, todo]
 description: 'Create/update Zod Schemas from Prisma models'
 ---
 
