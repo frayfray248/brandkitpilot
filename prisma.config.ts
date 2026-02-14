@@ -1,12 +1,15 @@
+import { getDatabaseUrl } from './src/db/utils';
 import './envConfig.ts'
 import path from "node:path";
-import { defineConfig, env } from "prisma/config";
+import { defineConfig } from "prisma/config";
 
 const SEED_SCRIPTS: Record<string, string> = {
     "test": "tsx prisma/seed/seed.test.ts",
     "development": "tsx prisma/seed/seed.dev.ts",
     "production": "tsx prisma/seed/seed.prod.ts",
 };
+
+process.env.DATABASE_URL = process.env.DATABASE_URL || getDatabaseUrl();   
 
 export default defineConfig({
     schema: path.join("prisma", "schema.prisma"),
@@ -16,6 +19,6 @@ export default defineConfig({
     },
     engine: "classic",
     datasource: {
-        url: env("DATABASE_URL"),
+        url: process.env.DATABASE_URL,
     }
 });

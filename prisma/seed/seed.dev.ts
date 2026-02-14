@@ -1,6 +1,10 @@
-import {  PrismaClient } from "../../generated/prisma";
+import { getDatabaseUrl } from "@/db/utils";
+import { PrismaClient } from "../../generated/prisma";
 import frameworks from "./data/frameworks";
-const prisma = new PrismaClient();
+
+const prisma = new PrismaClient({
+    datasourceUrl: process.env.DATABASE_URL || getDatabaseUrl()
+});
 
 
 const main = async () => {
@@ -17,13 +21,13 @@ const main = async () => {
     }
 };
 
-    ; (async () => {
-        try {
-            await main();
-            await prisma.$disconnect();
-        } catch (error) {
-            console.error(error);
-            await prisma.$disconnect();
-            process.exit(1);
-        }
-    })();
+; (async () => {
+    try {
+        await main();
+        await prisma.$disconnect();
+    } catch (error) {
+        console.error(error);
+        await prisma.$disconnect();
+        process.exit(1);
+    }
+})();

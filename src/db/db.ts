@@ -1,13 +1,16 @@
 import serverEnv from "@/lib/env/serverEnv";
 import { PrismaClient } from "../../generated/prisma";
+import { getDatabaseUrl } from "@/db/utils";
 
 const globalForPrisma = global as unknown as {
     prisma: PrismaClient
 }
 
-const prisma = globalForPrisma.prisma || new PrismaClient().$extends({
+const prisma = globalForPrisma.prisma || new PrismaClient({
+    datasourceUrl: process.env.DATABASE_URL || getDatabaseUrl()
+}).$extends({
     name: "Default User termsAccepted",
-    query: {
+    query: { 
         user: {
             async create({ model, operation, args, query }) {
 

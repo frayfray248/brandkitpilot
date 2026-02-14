@@ -1,6 +1,11 @@
+import { getDatabaseUrl } from "@/db/utils";
 import {  PrismaClient } from "../../generated/prisma";
 import frameworks from "./data/frameworks";
-const prisma = new PrismaClient();
+
+
+const prisma = new PrismaClient({
+    datasourceUrl: process.env.DATABASE_URL || getDatabaseUrl()
+});
 
 
 const main = async () => {
