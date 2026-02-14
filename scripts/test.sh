@@ -1,9 +1,5 @@
 #!/bin/bash
 
-mkdir -p generated
-openssl rand -base64 756 > generated/mongodb-test-keyfile
-chmod 400 generated/mongodb-test-keyfile
-
 npm run build-services
 
 npm run start-services -- detached --test

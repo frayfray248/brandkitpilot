@@ -15,6 +15,7 @@ COPY scripts ./scripts
 
 # Install tsx globally for TypeScript execution (required for running TypeScript files directly)
 RUN npm install -g tsx
+RUN npm install -g nodemon
 
 RUN mkdir -p ./generated/prisma
 RUN sh ./scripts/generate.sh noauth

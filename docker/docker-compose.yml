@@ -1,26 +1,31 @@
 services:
   mongodb-test:
-    image: mongo:7
-    container_name: mongodb-test
-    command: ["/bin/sh", "/docker-entrypoint-initdb.d/mongodb-init.sh"]
+    image: prismagraphql/mongo-single-replica:5.0.3
+    container_name: mongodb
+    # command: ["/bin/sh", "/docker-entrypoint-initdb.d/mongodb-init.sh"]
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=test
-    volumes:
-      - ./mongodb-init.sh:/docker-entrypoint-initdb.d/mongodb-init.sh:ro
-      - ../generated/mongodb-test-keyfile:/data/keyfile
+      - MONGO_INITDB_ROOT_USERNAME=brandkitpilot-test-mongo-user-appdataagent
+      - MONGO_INITDB_ROOT_PASSWORD=t3st
     ports:
       - "27017:27017"
-    networks:
-      - app-network
     profiles:
       - test
-    healthcheck:
-      test: mongosh --username admin --password test --authenticationDatabase admin --quiet --eval "db.adminCommand('ping')"
-      interval: 5s
-      timeout: 10s
-      retries: 5
-      start_period: 30s
+  mongodb-dev:
+    image: prismagraphql/mongo-single-replica:5.0.3
+    container_name: mongodb
+    # command: ["/bin/sh", "/docker-entrypoint-initdb.d/mongodb-init.sh"]
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=brandkitpilot-dev-mongo-user-appdataagent
+      - MONGO_INITDB_ROOT_PASSWORD=d3vP&ss
+    volumes:
+    #  - ./mongodb-init.sh:/docker-entrypoint-initdb.d/mongodb-init.sh:ro
+    #  - ../generated/mongodb-test-keyfile:/data/keyfile
+      - mongodb-dev-data:/data/db
+      - ./docker-entrypoint.sh:/usr/local/bin/docker-entrypoint.sh:ro
+    ports:
+      - "27017:27017"
+    profiles:
+      - development
   mailpit-test:
     image: axllent/mailpit
     container_name: mailpit-test
@@ -29,8 +34,17 @@ services:
       - "8025:8025"
     profiles:
       - test
-    networks:
-      - app-network
+
+  mailpit-dev:
+    image: axllent/mailpit
+    container_name: mailpit-dev
+    volumes:
+      - mailpit-data:/data
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    profiles:
+      - development
 
   memory-cache:
     image: valkey/valkey:latest
@@ -38,21 +52,19 @@ services:
     restart: unless-stopped
     ports:
       - "6379:6379"
-    networks:
-      - app-network
   worker:
     build:
       context: ../
       dockerfile: docker/Dockerfile.worker
     container_name: worker
     restart: unless-stopped
-    networks:
-      - app-network
     depends_on:
       - memory-cache
     env_file: ${ENV_FILE}
     environment:
       - REDIS_URL=redis://memory-cache:6379
+      - NODE_ENV=${NODE_ENV}
+      - DATABASE_HOST=mongodb
     volumes:
       - ../:/app:cached
       - /app/node_modules
@@ -67,6 +79,6 @@ services:
     network_mode: host
     restart: unless-stopped
 
-networks:
-  app-network:
-    driver: bridge
+volumes:
+  mongodb-dev-data:
+  mailpit-data:
