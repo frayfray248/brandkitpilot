@@ -6,7 +6,7 @@ BrandKitPilot is an AI-powered brand strategy platform that helps businesses cre
 
 ### Core Features
 - **AI-Powered Brand Generation**: Leverages OpenAI GPT models to generate intelligent brand assets
-- **Multiple Branding Frameworks**: Support for StoryBrand, Brand Key, Brand Pyramid, and Brand Personality frameworks
+- **Multiple Branding Frameworks**: Support for StoryBrand, Brand Key, and Brand Pyramid frameworks
 - **Comprehensive Brand Kits**: Generate slogans, color palettes, typography, voice guidelines, and marketing copy
 - **Real-time Processing**: Background job processing with BullMQ for scalable brand kit generation
 - **User Dashboard**: Track brand kit generation progress and manage past projects
@@ -35,7 +35,7 @@ BrandKitPilot is an AI-powered brand strategy platform that helps businesses cre
 - **Prisma ORM**: Type-safe database access with MongoDB
 - **MongoDB**: NoSQL database for flexible data storage
 - **BullMQ**: Redis-based job queue for background processing
-- **Redis**: High-performance caching and job queue storage
+- **Valkey**: Redis-compatible high-performance caching and job queue storage
 
 ### Authentication
 - **Better Auth**: Modern authentication library with session management
@@ -45,8 +45,7 @@ BrandKitPilot is an AI-powered brand strategy platform that helps businesses cre
 ### AI & External Services
 - **OpenAI API**: GPT models for brand content generation
 - **Stripe API**: Payment processing and subscription management
-- **AWS SES v2**: Transactional email delivery
-- **Nodemailer**: Email composition and delivery
+- **Nodemailer**: SMTP-based email composition and delivery
 
 ### Development & Testing
 - **Playwright**: End-to-end testing with real browser automation
@@ -63,10 +62,10 @@ BrandKitPilot is an AI-powered brand strategy platform that helps businesses cre
 ### Prerequisites
 - Node.js 18+ and npm
 - MongoDB database
-- Redis instance
+- Valkey or Redis instance
 - OpenAI API key
 - Stripe account with API keys
-- AWS SES configuration (optional, for production emails)
+- SMTP server configuration (e.g., Gmail, SendGrid, AWS SES)
 
 ### Environment Setup
 
@@ -88,8 +87,14 @@ NODE_ENV="development"  # or "production" or "test"
 APP_NAME="BrandKitPilot"
 APP_URL="http://localhost:3000"
 
-# Database (MongoDB)
-DATABASE_URL="mongodb://localhost:27017/brandkitpilot"
+# Database (MongoDB) - Individual components
+DATABASE_PROTOCOL="mongodb"
+DATABASE_USERNAME="your-mongo-username"
+DATABASE_PASSWORD="your-mongo-password"
+DATABASE_HOST="localhost"
+DATABASE_PORT="27017"
+DATABASE_NAME="brandkitpilot-dev-db"
+DATABASE_ARGS="authSource=admin&directConnection=true"  # Optional connection arguments
 
 # Authentication (Better Auth)
 BETTER_AUTH_SECRET="your-long-secure-random-string"
@@ -103,14 +108,14 @@ STRIPE_WEBHOOK_SECRET="whsec_..."
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_..."
 NEXT_PUBLIC_STRIPE_CHECKOUT_ENDPOINT="/api/stripe/checkout"
 
-# Redis (Job Queue & Caching)
-REDIS_URL="redis://localhost:6379"
+# Valkey/Redis (Job Queue & Caching)
+REDIS_URL="localhost"  # For Docker: "redis://memory-cache:6379"
 
 # Email Configuration (SMTP)
 EMAIL_SERVER_USER="your-smtp-username"
 EMAIL_SERVER_PASSWORD="your-smtp-password"
-EMAIL_SERVER_HOST="smtp.gmail.com"
-EMAIL_SERVER_PORT="587"
+EMAIL_SERVER_HOST="localhost"  # For production: smtp.gmail.com, smtp.sendgrid.net, etc.
+EMAIL_SERVER_PORT="1025"  # Mailpit port for local dev; 587 for production SMTP
 EMAIL_FROM="noreply@brandkitpilot.com"
 ```
 
@@ -142,7 +147,7 @@ EMAIL_FROM="noreply@brandkitpilot.com"
    npm run build-services
    ```
 
-6. **Start Docker services (MongoDB & Redis)**
+6. **Start Docker services (MongoDB, Valkey, & Mailpit)**
    ```bash
    # Option 1: Start in detached mode (background)
    npm run start-services detached
@@ -150,6 +155,11 @@ EMAIL_FROM="noreply@brandkitpilot.com"
    # Option 2: Start in a separate terminal window
    npm run start-services
    ```
+   
+   This starts:
+   - MongoDB on port 27017
+   - Valkey (Redis-compatible) on port 6379
+   - Mailpit email testing server on ports 1025 (SMTP) and 8025 (Web UI)
 
 7. **Start development server**
    ```bash
@@ -159,6 +169,7 @@ EMAIL_FROM="noreply@brandkitpilot.com"
 8. **Access the application**
    - Web app: http://localhost:3000
    - Storybook: http://localhost:6006 (run `npm run storybook`)
+   - Mailpit Web UI: http://localhost:8025/api/v1/messages (for viewing test emails)
 
 ## 🏗 Development
 
@@ -244,9 +255,9 @@ The test script automatically:
 ### Production Checklist
 - [ ] Configure production environment variables
 - [ ] Set up MongoDB Atlas or production MongoDB
-- [ ] Configure Redis instance (AWS ElastiCache recommended)
+- [ ] Configure Valkey/Redis instance (AWS MemoryDB, ElastiCache, or Upstash recommended)
 - [ ] Set up Stripe webhook endpoints
-- [ ] Configure AWS SES for production emails
+- [ ] Configure production SMTP server (AWS SES, SendGrid, or similar)
 - [ ] Set up monitoring and alerting
 - [ ] Configure domain and SSL certificates
 - [ ] Run E2E tests against staging environment
@@ -254,7 +265,7 @@ The test script automatically:
 ### Scaling Considerations
 - **Horizontal Scaling**: Multiple worker instances for job processing
 - **Database Optimization**: MongoDB sharding for large datasets
-- **Caching**: Redis for session storage and job queues
+- **Caching**: Valkey/Redis for session storage and job queues
 - **CDN Integration**: Static asset optimization
 - **Load Balancing**: Multiple Next.js instances behind load balancer
 
