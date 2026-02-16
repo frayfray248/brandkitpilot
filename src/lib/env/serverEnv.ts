@@ -23,6 +23,7 @@ const serverSchema = z.object({
     REDIS_URL: z.string().min(1),
     // OPENAI
     OPENAI_API_KEY: z.string().min(1),
+    CREATE_BRANDKIT_PROMPT_ID: z.string().min(1),
 })
 
 const _server = serverSchema.safeParse(process.env);
