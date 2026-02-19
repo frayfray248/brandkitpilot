@@ -43,7 +43,7 @@ BrandKitPilot is an AI-powered brand strategy platform that helps businesses cre
 - **Magic Link Support**: Passwordless authentication option
 
 ### AI & External Services
-- **OpenAI API**: GPT models for brand content generation
+- **OpenAI API**: GPT models with dashboard-managed prompts for intelligent brand content generation
 - **Stripe API**: Payment processing and subscription management
 - **Nodemailer**: SMTP-based email composition and delivery
 
@@ -101,6 +101,7 @@ BETTER_AUTH_SECRET="your-long-secure-random-string"
 
 # OpenAI Integration
 OPENAI_API_KEY="sk-..."
+CREATE_BRANDKIT_PROMPT_ID="pmpt_your_prompt_id"
 
 # Stripe Payment Processing
 STRIPE_SECRET_KEY="sk_test_..."

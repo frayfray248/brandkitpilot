@@ -1,11 +1,11 @@
 import { BrandFramework } from "@/generated/prisma";
 import { OPENAI_MODEL } from "@/lib/ai/const";
-import { createBrandKitPrompt } from "@/lib/ai/prompts";
-import { AIResponse, BrandKitInput, BrandKitOutput } from "@/lib/ai/types";
+import { AIResponse, BrandKitInput, BrandKitOutput, OpenAIPrompt } from "@/lib/ai/types";
 import { zodTextFormat } from "openai/helpers/zod.mjs";
 import z from "zod";
 import { createStructuredOutputResponse } from "@/lib/ai/openai";
 import { calculateTokenCost } from "@/lib/ai/utils";
+import { createBrandKitPrompt } from "@/lib/ai/prompts";
 
 // Creates dynamic Zod schema based on the framework's output sections
 export const createBrandKitResponseSchema = (framework: BrandFramework) => {
@@ -37,7 +37,13 @@ export const createBrandKitResponse = async (
     }
 
     const responseSchema = createBrandKitResponseSchema(framework);
-    const prompt = createBrandKitPrompt(framework, inputs);
+
+    const prompt: OpenAIPrompt = createBrandKitPrompt({
+        frameworkName: framework.name,
+        context: framework.promptContext || "",
+        outputSections: framework.outputSections.map(s => s.title).join(', '),
+        userInputs: JSON.stringify(inputs),
+    })
 
     console.log("Generating brand kit with prompt:", prompt);
 
@@ -48,7 +54,6 @@ export const createBrandKitResponse = async (
     try {
 
         const response = await createStructuredOutputResponse<BrandKitOutput>(
-            model,
             prompt,
             format
         );

@@ -17,3 +17,9 @@ export type AIResponse<T> = {
     output: T;
     cost: number;
 }
+
+export type OpenAIPrompt = {
+    id: string;
+    version?: string;
+    variables: Record<string, any>;
+}
