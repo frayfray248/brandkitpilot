@@ -10,10 +10,12 @@ const frameworks: Omit<BrandFramework, "createdAt" | "id">[] = [
             { fieldId: "character", label: 'Character', type: 'TEXT', placeholder: 'A character who wants something', helpText: 'Define the main character of your story and what they desire.' },
             { fieldId: "problem", label: 'Problem', type: 'TEXT', placeholder: 'Has a problem', helpText: 'Identify the problem or challenge that the character faces.' },
             { fieldId: "guide", label: 'Guide', type: 'TEXT', placeholder: 'Meets a guide', helpText: 'Introduce a guide who helps the character overcome their problem.' },
+            { fieldId: "empathy", label: 'Empathy', type: 'TEXT', placeholder: 'Who empathizes with their problem', helpText: 'Describe how the guide shows empathy and understanding towards the character\'s problem.' },
+            { fieldId: "authority", label: 'Authority', type: 'TEXT', placeholder: 'And has authority to help', helpText: 'Explain the guide\'s authority and credibility in helping the character solve their problem.' },
             { fieldId: "plan", label: 'Plan', type: 'TEXT', placeholder: 'Who gives them a plan', helpText: 'Outline the plan that the guide provides to the character.' },
             { fieldId: "callToAction", label: 'Call to Action', type: 'TEXT', placeholder: 'And calls them to action', helpText: 'Describe the call to action that prompts the character to take steps towards resolving their problem.' },
-            { fieldId: "success", label: 'Success', type: 'TEXT', placeholder: 'That helps them avoid failure', helpText: 'Explain how following the plan helps the character avoid failure.' },
-            { fieldId: "transformation", label: 'Transformation', type: 'TEXT', placeholder: 'And ends in a success', helpText: 'Show the positive transformation or success that results from following the plan.' },
+            { fieldId: "risks", label: 'Risks of not taking action', type: 'TEXT', placeholder: 'Risks of not taking action', helpText: 'Highlight the potential negative consequences if the character does not follow the plan.' },
+            { fieldId: "success", label: 'Success', type: 'TEXT', placeholder: 'Describe the successful resolution', helpText: 'Explain how following the plan helps the character achieve their goal.' },
         ],
         outputSections: [
             {
@@ -21,16 +23,24 @@ const frameworks: Omit<BrandFramework, "createdAt" | "id">[] = [
                 description: 'A clear and compelling headline that grabs attention and summarizes the main message.',
             },
             {
-                title: 'Problem Statement',
-                description: 'A concise statement that highlights the problem your audience is facing.',
+                title: 'Call to Action',
+                description: 'A clear and direct call to action that tells your audience what to do next.',
             },
             {
                 title: 'Value Proposition',
-                description: 'A brief explanation of how your product or service solves the problem and the benefits it provides.',
+                description: 'A concise statement that explains the unique value your product or service offers to customers.',
             },
             {
-                title: 'Call to Action',
-                description: 'A clear and direct call to action that tells your audience what to do next.',
+                title: 'Plan Overview',
+                description: 'A simple and easy-to-understand plan that guides customers on how to engage with your product or service.',
+            },
+            {
+                title: 'Empathy Statement',
+                description: 'A statement that shows you understand and care about your audience\'s problem.',
+            },
+            {
+                title: 'Authority Statement',
+                description: 'A statement that establishes your credibility and authority in solving the problem.',
             },
             {
                 title: 'Success Vision',
@@ -40,10 +50,7 @@ const frameworks: Omit<BrandFramework, "createdAt" | "id">[] = [
                 title: 'Failure Avoidance',
                 description: 'An explanation of the negative consequences your audience will avoid by taking action.',
             },
-            {
-                title: 'Authority Statement',
-                description: 'A statement that establishes your credibility and authority in solving the problem.',
-            }
+
         ]
     },
     {

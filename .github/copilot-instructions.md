@@ -2,6 +2,10 @@
 applyTo: '**'
 ---
 
-# Instructions for AI
+# Copilot Instructions
 
-All AI agents must follow the guidelines set forth in the AGENTS.md file located in the project root directory.
+Before making any changes or suggestions, read and follow the instructions in:
+
+- `.github/instructions/agent-instructions.md` — required workflow, constraints, and guardrails
+- `.github/instructions/general-project-instructions.md` — coding conventions and project standards
+- `AGENTS.md` — project structure, documentation, and system-specific guidelines

@@ -1,19 +1,19 @@
 # BrandKitPilot
 
-BrandKitPilot is an AI-powered brand strategy platform that helps businesses create comprehensive brand kits using intelligent automation. The application combines advanced AI capabilities with proven branding frameworks to generate professional brand assets including slogans, color palettes, typography suggestions, and brand voice guidelines.
+BrandKitPilot is an AI-powered brand strategy platform that helps businesses create comprehensive brand kits using intelligent automation. The application combines advanced AI capabilities with proven branding frameworks to generate professional text-based web copy and branding messages tailored to the user's business.
 
 ## 🚀 Features
 
 ### Core Features
-- **AI-Powered Brand Generation**: Leverages OpenAI GPT models to generate intelligent brand assets
+- **AI-Powered Brand Generation**: Leverages OpenAI GPT models to generate intelligent branding content
 - **Multiple Branding Frameworks**: Support for StoryBrand, Brand Key, and Brand Pyramid frameworks
-- **Comprehensive Brand Kits**: Generate slogans, color palettes, typography, voice guidelines, and marketing copy
+- **Comprehensive Brand Kits**: Generate structured text-based web copy and branding messages tailored to each framework's output sections
 - **Real-time Processing**: Background job processing with BullMQ for scalable brand kit generation
 - **User Dashboard**: Track brand kit generation progress and manage past projects
 - **Token-based System**: Pay-per-use model with Stripe integration for secure payments
 
 ### Authentication & Security
-- **Better Auth Integration**: Modern authentication with email/password and magic link support
+- **Better Auth Integration**: Passwordless authentication via magic links — no passwords required
 - **Session Management**: Secure user sessions with automatic token refresh
 
 ### Payment System
@@ -39,23 +39,21 @@ BrandKitPilot is an AI-powered brand strategy platform that helps businesses cre
 
 ### Authentication
 - **Better Auth**: Modern authentication library with session management
-- **Email Verification**: Secure user registration flow
-- **Magic Link Support**: Passwordless authentication option
+- **Magic Links**: Passwordless sign-in and sign-up via time-limited email links
 
 ### AI & External Services
 - **OpenAI API**: GPT models with dashboard-managed prompts for intelligent brand content generation
-- **Stripe API**: Payment processing and subscription management
-- **Nodemailer**: SMTP-based email composition and delivery
+- **Stripe API**: One-time token purchase processing via Stripe Checkout
+- **AWS SES**: Transactional email delivery (production)
+- **AWS S3**: File storage for legal documents
 
 ### Development & Testing
 - **Playwright**: End-to-end testing with real browser automation
 - **Mailpit**: Local email testing server for magic link authentication
-- **Docker Testing**: Isolated test environment with containerized execution
 - **Storybook**: Component development and documentation
 - **ESLint**: Code linting with Next.js configuration
 - **Husky**: Git hooks for pre-commit validation
-- **Docker**: Containerized development environment
-- **Docker Compose**: Multi-service orchestration for development
+- **Docker / Docker Compose**: Local development and test environment orchestration (not used in production)
 
 ## 🚦 Getting Started
 
@@ -110,7 +108,7 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_..."
 NEXT_PUBLIC_STRIPE_CHECKOUT_ENDPOINT="/api/stripe/checkout"
 
 # Valkey/Redis (Job Queue & Caching)
-REDIS_URL="localhost"  # For Docker: "redis://memory-cache:6379"
+REDIS_URL="localhost"  # Use the hostname/URL of your Valkey or Redis instance
 
 # Email Configuration (SMTP)
 EMAIL_SERVER_USER="your-smtp-username"
@@ -143,13 +141,14 @@ EMAIL_FROM="noreply@brandkitpilot.com"
    npm run seed
    ```
 
-5. **Build Docker services**
-   ```bash
-   npm run build-services
-   ```
+5. **Start local development services (MongoDB, Valkey, & Mailpit)**
 
-6. **Start Docker services (MongoDB, Valkey, & Mailpit)**
+   Docker is used to run local development dependencies. These services are not part of production.
+
    ```bash
+   # Build service images (first time only)
+   npm run build-services
+
    # Option 1: Start in detached mode (background)
    npm run start-services detached
    
@@ -162,12 +161,12 @@ EMAIL_FROM="noreply@brandkitpilot.com"
    - Valkey (Redis-compatible) on port 6379
    - Mailpit email testing server on ports 1025 (SMTP) and 8025 (Web UI)
 
-7. **Start development server**
+6. **Start development server**
    ```bash
    npm run dev
    ```
 
-8. **Access the application**
+7. **Access the application**
    - Web app: http://localhost:3000
    - Storybook: http://localhost:6006 (run `npm run storybook`)
    - Mailpit Web UI: http://localhost:8025/api/v1/messages (for viewing test emails)
@@ -189,12 +188,12 @@ EMAIL_FROM="noreply@brandkitpilot.com"
 - `npm run generate` - Generate Prisma client and Better Auth schemas
 - `npm run generate noauth` - Generate only Prisma client (skip Better Auth)
 
-#### Services & Database
-- `npm run build-services` - Build Docker services (MongoDB, Redis)
-- `npm run start-services` - Start Docker services
-- `npm run start-services detached` - Start services in background
+#### Local Services (Docker — development only)
+- `npm run build-services` - Build local service images (MongoDB, Valkey, Mailpit)
+- `npm run start-services` - Start local services
+- `npm run start-services detached` - Start local services in background
 - `npm run start-services --test` - Start services with test environment (automatically run by `npm run test`)
-- `npm run stop-services` - Stop Docker services
+- `npm run stop-services` - Stop local services
 - `npm run seed` - Seed the database with initial data
 
 ### Architecture Patterns
@@ -204,7 +203,7 @@ EMAIL_FROM="noreply@brandkitpilot.com"
 - **Queue Processing**: Background jobs processed through BullMQ with Redis
 - **Authentication**: Better Auth handles all authentication flows
 - **Component Design**: Follow patterns documented in `/docs/component-patterns.md`
-- **E2E Testing**: Docker-based Playwright tests with real email verification - see `/tests/README.md`
+- **E2E Testing**: Playwright tests with real email verification (runs via Docker locally) - see `/tests/README.md`
 
 ## 🔐 Security Features
 
@@ -229,7 +228,7 @@ The application includes comprehensive logging and monitoring:
 
 The application includes comprehensive E2E testing using Playwright:
 
-- **Docker-based Execution**: Tests run in isolated containers for consistency
+- **Local Execution**: Tests run via Docker locally for a consistent, isolated environment
 - **Real Email Testing**: Local Mailpit instance for magic link verification
 - **Global Setup**: Automatic database seeding before test runs
 - **Page Object Model**: Maintainable test structure with reusable components
@@ -240,12 +239,12 @@ For detailed testing documentation, see [`/tests/README.md`](/tests/README.md).
 ### Running Tests
 
 ```bash
-# Run all tests (automatically builds services, runs tests in Docker, and cleans up)
+# Run all tests (automatically builds local services, runs tests, and cleans up)
 npm run test
 ```
 
 The test script automatically:
-1. Builds Docker services
+1. Builds local Docker services
 2. Starts services in detached mode
 3. Builds the Playwright test container
 4. Runs tests with test environment configuration
