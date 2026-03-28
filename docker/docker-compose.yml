@@ -1,57 +1,94 @@
+# =============================================================================
+# BrandKitPilot Docker Compose Services
+# =============================================================================
+#
+# Profiles:
+#   - development: Full local dev environment
+#   - test: Isolated test environment (ephemeral data)
+#
+# Usage:
+#   ENV_FILE=../.env.development.local docker compose --profile development up
+#   ENV_FILE=../.env.test.local docker compose --profile test up
+#
+# Or use the scripts:
+#   npm run start-services          # development
+#   npm run start-services -- --test # test
+#
+# =============================================================================
+
 services:
+  # ---------------------------------------------------------------------------
+  # MongoDB - Test Environment (ephemeral)
+  # ---------------------------------------------------------------------------
   mongodb-test:
     image: prismagraphql/mongo-single-replica:5.0.3
     container_name: mongodb
-    # command: ["/bin/sh", "/docker-entrypoint-initdb.d/mongodb-init.sh"]
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=brandkitpilot-test-mongo-user-appdataagent
-      - MONGO_INITDB_ROOT_PASSWORD=t3st
+      # Credentials are loaded from the host env file
+      - MONGO_INITDB_ROOT_USERNAME=${DATABASE_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${DATABASE_PASSWORD}
     ports:
       - "27017:27017"
     profiles:
       - test
+
+  # ---------------------------------------------------------------------------
+  # MongoDB - Development Environment (persistent volume)
+  # ---------------------------------------------------------------------------
   mongodb-dev:
     image: prismagraphql/mongo-single-replica:5.0.3
     container_name: mongodb
-    # command: ["/bin/sh", "/docker-entrypoint-initdb.d/mongodb-init.sh"]
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=brandkitpilot-dev-mongo-user-appdataagent
-      - MONGO_INITDB_ROOT_PASSWORD=d3vP&ss
+      # Credentials are loaded from the host env file
+      - MONGO_INITDB_ROOT_USERNAME=${DATABASE_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${DATABASE_PASSWORD}
     volumes:
-    #  - ./mongodb-init.sh:/docker-entrypoint-initdb.d/mongodb-init.sh:ro
-    #  - ../generated/mongodb-test-keyfile:/data/keyfile
       - mongodb-dev-data:/data/db
       - ./docker-entrypoint.sh:/usr/local/bin/docker-entrypoint.sh:ro
     ports:
       - "27017:27017"
     profiles:
       - development
+
+  # ---------------------------------------------------------------------------
+  # Mailpit - Test Environment (email capture for E2E tests)
+  # ---------------------------------------------------------------------------
   mailpit-test:
     image: axllent/mailpit
     container_name: mailpit-test
     ports:
-      - "1025:1025"
-      - "8025:8025"
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # Web UI
     profiles:
       - test
 
+  # ---------------------------------------------------------------------------
+  # Mailpit - Development Environment (email capture with persistence)
+  # ---------------------------------------------------------------------------
   mailpit-dev:
     image: axllent/mailpit
     container_name: mailpit-dev
     volumes:
       - mailpit-data:/data
     ports:
-      - "1025:1025"
-      - "8025:8025"
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # Web UI - view at http://localhost:8025
     profiles:
       - development
 
+  # ---------------------------------------------------------------------------
+  # Valkey (Redis-compatible) - Job Queue Cache
+  # ---------------------------------------------------------------------------
   memory-cache:
     image: valkey/valkey:latest
     container_name: memory-cache
     restart: unless-stopped
     ports:
       - "6379:6379"
+
+  # ---------------------------------------------------------------------------
+  # BullMQ Worker - Background Job Processing
+  # ---------------------------------------------------------------------------
   worker:
     build:
       context: ../
@@ -68,17 +105,26 @@ services:
     volumes:
       - ../:/app:cached
       - /app/node_modules
-      - /app/generated/prisma # must be excluded so Prisma uses the correct binaries for inside the container
+      - /app/generated/prisma  # Excluded so Prisma uses container-compatible binaries
 
+  # ---------------------------------------------------------------------------
+  # Stripe CLI - Webhook Forwarding for Local Development
+  # ---------------------------------------------------------------------------
+  # Forwards Stripe webhook events to your local server.
+  # STRIPE_SECRET_KEY must be set in the host environment file.
   stripe-cli:
     image: stripe/stripe-cli:latest
     container_name: stripe-cli
     command: ["listen", "--forward-to", "${FORWARD_TO}"]
     environment:
-      - STRIPE_API_KEY=${STRIPE_API_KEY}
+      - STRIPE_API_KEY=${STRIPE_SECRET_KEY}
     network_mode: host
     restart: unless-stopped
 
+# =============================================================================
+# Volumes
+# =============================================================================
 volumes:
   mongodb-dev-data:
+    # Persistent MongoDB data for development
   mailpit-data:

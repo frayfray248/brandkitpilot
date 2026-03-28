@@ -150,9 +150,9 @@ EMAIL_FROM="noreply@brandkitpilot.com"
    npm run build-services
 
    # Option 1: Start in detached mode (background)
-   npm run start-services detached
+   npm run start-services -- -d
    
-   # Option 2: Start in a separate terminal window
+   # Option 2: Start in foreground (shows logs)
    npm run start-services
    ```
    
@@ -183,17 +183,22 @@ EMAIL_FROM="noreply@brandkitpilot.com"
 
 #### Testing
 - `npm run test` - Build services, run E2E tests in Docker, then cleanup
+- `npm run test:headed` - Run tests with visible browser (requires X11)
+- `npm run test:debug` - Run tests with Playwright debug mode
+- `npm run test:fast` - Skip container rebuilds for faster iteration
 
 #### Code Generation
 - `npm run generate` - Generate Prisma client and Better Auth schemas
-- `npm run generate noauth` - Generate only Prisma client (skip Better Auth)
+- `npm run generate -- --no-auth` - Generate only Prisma client (skip Better Auth)
 
 #### Local Services (Docker — development only)
 - `npm run build-services` - Build local service images (MongoDB, Valkey, Mailpit)
-- `npm run start-services` - Start local services
-- `npm run start-services detached` - Start local services in background
-- `npm run start-services --test` - Start services with test environment (automatically run by `npm run test`)
+- `npm run start-services` - Start local services (foreground)
+- `npm run start-services -- -d` - Start local services in background (detached)
+- `npm run start-services -- --test -d` - Start test environment in background
 - `npm run stop-services` - Stop local services
+- `npm run services:status` - Show running container status
+- `npm run services:logs` - View service logs (add `-- worker` for specific service)
 - `npm run seed` - Seed the database with initial data
 
 ### Architecture Patterns

@@ -10,6 +10,8 @@ const prisma = new PrismaClient({
 
 const main = async () => {
 
+    console.log(`Database URL: ${process.env.DATABASE_URL || getDatabaseUrl()}`);
+
     await auth.api.createUser({
         body: {
             name: process.env.TESTMAIL_USER_NAME!,
