@@ -41,3 +41,32 @@ graph TD
 ```
 
 📌 **Note:** *"Terms of Use" and "Privacy Policy" are accessible via a persistent footer on all pages, even if only shown linked from the Landing Page here for simplicity.*
+## Brand Kit Results Page - Polling Mechanism
+
+The **Brand Kit Results** page (`/results/[id]`) implements automatic polling to display real-time updates as the brand kit generation completes:
+
+### Initial Load
+- Server-side rendering (`SSR`) fetches the current brand kit status on page load
+- If status is `PENDING`, a client-side polling component takes over
+- If status is `COMPLETED` or `FAILED`, the appropriate content is displayed immediately
+
+### Client-Side Polling
+When a brand kit is in `PENDING` state:
+- **Polling starts automatically** with a 2-second interval
+- The interval uses **exponential backoff**: 2s → 4s → 8s → 16s → 30s
+- The client component calls the `getBrandKitStatus` Server Function to fetch updates
+- **Polling stops automatically** when:
+  - Status reaches a terminal state (`COMPLETED` or `FAILED`)
+  - Component unmounts (e.g., user navigates away)
+  - Connection errors occur 5+ consecutive times
+
+### Error Handling
+- Graceful error handling with visual feedback (error count indicator)
+- Automatic retry with exponential backoff prevents server overload
+- Users can manually refresh if polling fails
+
+### User Experience
+- Initial page load shows pending state with processing message
+- Results automatically appear without manual refresh when generation completes
+- Failed generations display an appropriate error message
+- Error indicators help users understand when retries are occurring

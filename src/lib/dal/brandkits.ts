@@ -1,3 +1,5 @@
+"use server"
+
 import prisma from "@/db/db";
 import { BrandKit, BrandKitStatus, TokenTransaction, User } from "../../../generated/prisma";
 import { checkServerAuth } from "@/lib/auth/server/session";
@@ -113,5 +115,30 @@ export const completeBrandKitWithTokenDeduction = async (brandKitId: string, out
         })
     ])
 
+
+}
+
+/**
+ * Fetches the current status and outputs of a brand kit.
+ * Used for polling brand kit generation status on the results page.
+ * 
+ * @param brandKitId - The ID of the brand kit to fetch status for
+ * @returns Object containing the current status and outputs, or null if not found
+ */
+export const getBrandKitStatus = async (brandKitId: string): Promise<{ status: BrandKitStatus; outputs: BrandKit["outputs"] } | null> => {
+
+    await checkServerAuth(headers)
+
+    const brandKit = await prisma.brandKit.findUnique({
+        where: {
+            id: brandKitId
+        },
+        select: {
+            status: true,
+            outputs: true
+        }
+    });
+
+    return brandKit;
 
 }
