@@ -142,3 +142,40 @@ export const getBrandKitStatus = async (brandKitId: string): Promise<{ status: B
     return brandKit;
 
 }
+
+/**
+ * Fetches a brand kit for export, with owner validation.
+ * Only returns COMPLETED brand kits that belong to the authenticated user.
+ * 
+ * @param brandKitId - The ID of the brand kit to fetch for export
+ * @returns The brand kit if found, completed, and owned by the user; null otherwise
+ * @throws Error if user is not authenticated
+ */
+export const getBrandKitForExport = async (brandKitId: string): Promise<BrandKit | null> => {
+
+    const session = await checkServerAuth(headers);
+
+    const brandKit = await prisma.brandKit.findUnique({
+        where: {
+            id: brandKitId
+        }
+    });
+
+    // Return null if brand kit not found
+    if (!brandKit) {
+        return null;
+    }
+
+    // Validate ownership - only the owner can export
+    if (brandKit.userId !== session.user.id) {
+        return null;
+    }
+
+    // Only allow export of completed brand kits
+    if (brandKit.status !== BrandKitStatus.COMPLETED) {
+        return null;
+    }
+
+    return brandKit;
+
+}

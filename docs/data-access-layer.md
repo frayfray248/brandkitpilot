@@ -181,12 +181,14 @@ Credentials are URL-encoded to handle special characters. `DATABASE_ARGS` is the
 | `updateBrandKitById(brandKitId, updates)` | No | Partially updates a brand kit by ID. Protects `id` and `userId` from modification via `Omit`. |
 | `getBrandKitById(brandKitId)` | Yes (session) | Fetches a single brand kit by its ID. |
 | `getAllBrandKitsByUserId(userId)` | Yes (session + ownership) | Fetches all brand kits for a user. Validates that the session user matches the requested `userId`. |
+| `getBrandKitForExport(brandKitId)` | Yes (session + ownership) | Fetches a brand kit for export. Returns `null` if not found, not owned by user, or not `COMPLETED`. |
 | `completeBrandKitWithTokenDeduction(...)` | No | Atomic transaction: updates brand kit to `COMPLETED`, deducts tokens from user, and logs a transaction. |
 
 **Notable patterns:**
 - `createBrandKit` and `updateBrandKitById` are **unauthenticated** because they are called from background workers (BullMQ processors) that don't have an HTTP request context with session cookies.
 - `completeBrandKitWithTokenDeduction` uses `prisma.$transaction()` (batch mode) to guarantee atomicity across three models — see [Transaction Patterns](#transaction-patterns).
 - `getAllBrandKitsByUserId` performs an **ownership check**: even with a valid session, a user can only fetch their own brand kits.
+- `getBrandKitForExport` validates ownership and status, returning `null` for unauthorized or incomplete brand kits instead of throwing.
 
 ### tokens.ts
 
