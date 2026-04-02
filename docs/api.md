@@ -240,3 +240,111 @@ return NextResponse.json({ users, total: users.length }, { status: 200 });
 // ✅ New way
 return Responses.success.Ok({ users, total: users.length });
 ```
+
+---
+
+## Brand Kit Export API
+
+### GET /api/brandkits/[id]/export
+
+Exports a brand kit in the specified format. Requires authentication and ownership of the brand kit.
+
+#### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `format` | string | Yes | Export format: `pdf`, `json`, `markdown`, or `text` |
+
+#### Authentication
+
+Requires authenticated session. The authenticated user must be the owner of the brand kit.
+
+#### Response
+
+**Success (200)**
+
+Returns the exported file with appropriate headers:
+
+| Format | Content-Type | Content-Disposition |
+|--------|--------------|---------------------|
+| `pdf` | `application/pdf` | `attachment; filename="{title}.pdf"` |
+| `json` | `application/json` | `attachment; filename="{title}.json"` |
+| `markdown` | `text/markdown` | `attachment; filename="{title}.md"` |
+| `text` | `text/plain` | `attachment; filename="{title}.txt"` |
+
+**Error Responses**
+
+| Status | Condition |
+|--------|-----------|
+| 400 | Missing or invalid `format` parameter |
+| 401 | User not authenticated |
+| 404 | Brand kit not found, not owned by user, or not completed |
+| 500 | Server error during export |
+
+#### Example Usage
+
+```typescript
+// Client-side fetch with download
+const response = await fetch(`/api/brandkits/${brandKitId}/export?format=pdf`, {
+    credentials: 'include',
+});
+
+if (response.ok) {
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'brandkit.pdf';
+    link.click();
+}
+```
+
+#### Export Format Details
+
+**JSON Format**
+```json
+{
+    "title": "My Brand Kit",
+    "sections": [
+        { "title": "Mission Statement", "content": "..." },
+        { "title": "Brand Voice", "content": "..." }
+    ],
+    "exportedAt": "2026-04-02T12:00:00.000Z"
+}
+```
+
+**Markdown Format**
+```markdown
+# My Brand Kit
+
+## Mission Statement
+
+Your mission content here...
+
+## Brand Voice
+
+Your brand voice content here...
+
+---
+*Exported from BrandKitPilot on 4/2/2026*
+```
+
+**Plain Text Format**
+```
+MY BRAND KIT
+============
+
+Mission Statement
+-----------------
+
+Your mission content here...
+
+
+Brand Voice
+-----------
+
+Your brand voice content here...
+
+
+Exported from BrandKitPilot on 4/2/2026
+```
