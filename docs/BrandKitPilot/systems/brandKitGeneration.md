@@ -63,6 +63,10 @@ The parsed response shape:
 }
 ```
 
+### Title Persistence and Polling
+
+The AI-generated `title` is persisted to the database when the job completes via `completeBrandKitWithTokenDeduction`. When a user waits on the `/results/:id` page for generation to finish, the client polls using `getBrandKitStatus`, which returns `{ status, outputs, title }`. The `ResultsPageClient` updates its local state with the new title when the status changes to `COMPLETED`, so the user sees the AI-generated title without needing to refresh the page.
+
 ## **Token Cost Calculation**
 
 After a successful API call, the actual USD cost is calculated from the usage data returned by OpenAI (`input_tokens`, `cached_tokens`, `output_tokens`) using per-model pricing defined in `utils.ts`. The cost is converted to in-app tokens using the conversion rate `TOKENS_PER_USD` and deducted atomically from the user's balance alongside saving the outputs.

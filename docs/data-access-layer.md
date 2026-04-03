@@ -181,6 +181,7 @@ Credentials are URL-encoded to handle special characters. `DATABASE_ARGS` is the
 | `updateBrandKitById(brandKitId, updates)` | No | Partially updates a brand kit by ID. Protects `id` and `userId` from modification via `Omit`. |
 | `getBrandKitById(brandKitId)` | Yes (session) | Fetches a single brand kit by its ID. |
 | `getAllBrandKitsByUserId(userId)` | Yes (session + ownership) | Fetches all brand kits for a user. Validates that the session user matches the requested `userId`. |
+| `getBrandKitStatus(brandKitId)` | Yes (session + ownership) | Returns `{ status, outputs, title }` for polling. Validates ownership before returning data. |
 | `getBrandKitForExport(brandKitId)` | Yes (session + ownership) | Fetches a brand kit for export. Returns `null` if not found, not owned by user, or not `COMPLETED`. |
 | `completeBrandKitWithTokenDeduction(...)` | No | Atomic transaction: updates brand kit to `COMPLETED`, deducts tokens from user, and logs a transaction. |
 

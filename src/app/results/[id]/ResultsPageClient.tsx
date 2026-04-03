@@ -132,11 +132,12 @@ const ResultsPageClient = ({ brandKit: initialBrandKit }: ResultsPageClientProps
         }
     };
 
-    const handleStatusChange = (newStatus: BrandKitStatus, outputs: any[]) => {
+    const handleStatusChange = (newStatus: BrandKitStatus, outputs: Array<{ title: string; content: string }>, title: string) => {
         setBrandKit(prev => ({
             ...prev,
             status: newStatus,
-            outputs: outputs || prev.outputs
+            outputs: outputs || prev.outputs,
+            title: title || prev.title
         }));
     };
 
