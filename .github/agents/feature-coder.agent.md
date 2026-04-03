@@ -31,7 +31,7 @@ Before making changes, read and follow:
 2. **Inspect existing code**: Read relevant files to understand current patterns.
 3. **Implement incrementally**: Make changes file by file, following the plan.
 4. **Run tests**: Execute `npm run test` after changes to verify nothing is broken.
-5. **Lint check**: Run `npm run lint` to ensure code style compliance.
+5. **Build check**: Run `npm run build` to ensure the project builds successfully.
 6. **Summarize**: Provide a clear summary of what was implemented.
 
 ## Constraints

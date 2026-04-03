@@ -19,7 +19,7 @@ When implementing changes, follow this process:
 2. Explain current behaviour
 3. Propose a plan
 4. Implement minimal changes
-5. Verify with tests and linting according to documentation
+5. Verify with test and build scripts according to documentation
 6. Summarise changes
 
 ## Constraints
