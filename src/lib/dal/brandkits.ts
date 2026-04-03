@@ -82,7 +82,7 @@ export const getAllBrandKitsByUserId = async (userId: string): Promise<BrandKit[
  *   [2] The created TokenTransaction record.
  * All operations are performed in a single transaction; if any step fails, no changes are applied.
  */
-export const completeBrandKitWithTokenDeduction = async (brandKitId: string, outputs: BrandKit["outputs"], userId: string, tokensConsumed: number): Promise<[
+export const completeBrandKitWithTokenDeduction = async (brandKitId: string, brandKitTitle: string, outputs: BrandKit["outputs"], userId: string, tokensConsumed: number): Promise<[
     BrandKit,
     User,
     TokenTransaction
@@ -96,6 +96,7 @@ export const completeBrandKitWithTokenDeduction = async (brandKitId: string, out
                 id: brandKitId
             },
             data: {
+                title: brandKitTitle,
                 status: BrandKitStatus.COMPLETED,
                 outputs
             }
@@ -119,15 +120,16 @@ export const completeBrandKitWithTokenDeduction = async (brandKitId: string, out
 }
 
 /**
- * Fetches the current status and outputs of a brand kit.
+ * Fetches the current status, title, and outputs of a brand kit.
  * Used for polling brand kit generation status on the results page.
+ * Validates that the requesting user owns the brand kit.
  * 
  * @param brandKitId - The ID of the brand kit to fetch status for
- * @returns Object containing the current status and outputs, or null if not found
+ * @returns Object containing the current status, title, and outputs, or null if not found or not owned by user
  */
-export const getBrandKitStatus = async (brandKitId: string): Promise<{ status: BrandKitStatus; outputs: BrandKit["outputs"] } | null> => {
+export const getBrandKitStatus = async (brandKitId: string): Promise<{ status: BrandKitStatus; outputs: BrandKit["outputs"]; title: string } | null> => {
 
-    await checkServerAuth(headers)
+    const session = await checkServerAuth(headers)
 
     const brandKit = await prisma.brandKit.findUnique({
         where: {
@@ -135,11 +137,20 @@ export const getBrandKitStatus = async (brandKitId: string): Promise<{ status: B
         },
         select: {
             status: true,
-            outputs: true
+            outputs: true,
+            title: true,
+            userId: true
         }
     });
 
-    return brandKit;
+    // Return null if not found or not owned by requesting user
+    if (!brandKit || brandKit.userId !== session.user.id) {
+        return null;
+    }
+
+    // Don't expose userId in return
+    const { userId, ...result } = brandKit;
+    return result;
 
 }
 

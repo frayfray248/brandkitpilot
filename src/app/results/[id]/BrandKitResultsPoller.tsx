@@ -10,11 +10,13 @@ import Badge from '@/components/Badge/Badge';
 import { BrandKitStatus } from "@/generated/prisma";
 import { getBrandKitStatus } from "@/lib/dal/brandkits";
 
+type BrandKitOutput = { title: string; content: string };
+
 interface BrandKitResultsPollerProps {
     brandKitId: string;
     initialStatus: BrandKitStatus;
     initialTitle: string;
-    onStatusChange: (status: BrandKitStatus, outputs: any[]) => void;
+    onStatusChange: (status: BrandKitStatus, outputs: BrandKitOutput[], title: string) => void;
 }
 
 /**
@@ -80,7 +82,7 @@ export default function BrandKitResultsPoller({
                 // Check if status has changed
                 if (result.status !== status) {
                     setStatus(result.status);
-                    onStatusChange(result.status, result.outputs);
+                    onStatusChange(result.status, result.outputs, result.title);
 
                     // Stop polling if terminal state reached
                     if (result.status === "COMPLETED" || result.status === "FAILED") {

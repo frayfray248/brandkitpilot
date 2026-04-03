@@ -50,6 +50,7 @@ export const processBrandKitJob = async (data: ProcessBrandKitJobData): Promise<
         // Complete brand kit with token deduction transaction
         const [updatedBrandKit, updatedUser, tokenTransaction] = await completeBrandKitWithTokenDeduction(
             data.brandKitId,
+            response.output.title || "New Brand Kit",
             brandKitOutputs,
             data.userId,
             tokensConsumed
