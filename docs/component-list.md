@@ -33,6 +33,17 @@ This project includes a comprehensive set of reusable UI components built with T
 - **Heading** - A semantic heading component (h1-h6) with predefined size mappings and consistent styling based on the Text component.
 - **Text** - A versatile text component supporting multiple sizes, colors, and semantic HTML elements with customizable typography options.
 
+## Landing Section Components
+
+- **HeroSection** - Primary hero section with headline, value proposition, CTA button, and micro-copy badge. Located at `src/components/landing/HeroSection.tsx`.
+- **ProblemSection** - Empathy section that connects with user pain points and communicates the problem of unclear brand messaging. Located at `src/components/landing/ProblemSection.tsx`.
+- **HowItWorksSection** - 3-step explainer section showing the user journey with numbered steps and descriptions. Located at `src/components/landing/HowItWorksSection.tsx`.
+- **AuthoritySection** - Authority/trust section highlighting proven frameworks (StoryBrand, Brand Key, Brand Pyramid) and expertise. Located at `src/components/landing/AuthoritySection.tsx`.
+- **ValuePropSection** - Success vision section with benefits of using the product. Located at `src/components/landing/ValuePropSection.tsx`.
+- **SocialProofSection** - Testimonials section displaying placeholder testimonials with quotes and attribution. Located at `src/components/landing/SocialProofSection.tsx`.
+- **PricingSection** - Token-based pricing section fetching real product data from Stripe. Includes error handling with graceful fallback when products cannot be loaded. Located at `src/components/landing/PricingSection.tsx`.
+- **CTASection** - Final conversion CTA section with success vision messaging and primary button. Located at `src/components/landing/CTASection.tsx`.
+
 ## Component Features
 
 All components follow consistent patterns with:

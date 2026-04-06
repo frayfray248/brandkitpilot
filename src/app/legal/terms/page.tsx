@@ -6,7 +6,8 @@ import Stack from "@/components/layout/Stack/Stack";
 
 const TermsPage = () => {
     return (
-        <Stack gap="8">
+        <Box className="mx-auto max-w-2xl p-4">
+            <Stack gap="8">
             <Heading type="h1">Terms of Service</Heading>
             <Box bgColor="base-100" padding="6" className="rounded-lg">
                 <Stack gap="6">
@@ -109,6 +110,7 @@ const TermsPage = () => {
                 </Stack>
             </Box>
         </Stack>
+        </Box>
     );
 };
 

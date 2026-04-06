@@ -6,13 +6,15 @@ import React from 'react'
 
 const page = () => {
     return (
-        <Stack gap="8" className="items-center">
+        <Box className="mx-auto max-w-2xl p-4">
+            <Stack gap="8" className="items-center">
             <Heading type="h1">Signup</Heading>
 
             <Box bgColor='base-100' padding='6' className='rounded-lg max-w-sm'>
                 <SignupForm />
             </Box>
         </Stack>
+        </Box>
     )
 }
 

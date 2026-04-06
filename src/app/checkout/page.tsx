@@ -18,7 +18,8 @@ const CheckoutPage = async () => {
     const products = (await getProducts()).sort((a, b) => a.tokens - b.tokens);
 
     return (
-        <Stack gap="8">
+        <Box className="mx-auto max-w-2xl p-4">
+            <Stack gap="8">
             <Heading type="h1">Checkout</Heading>
 
             <Box className="bg-base-200">
@@ -29,6 +30,7 @@ const CheckoutPage = async () => {
                 </Stack>
             </Box>
         </Stack>
+        </Box>
     );
 };
 

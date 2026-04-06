@@ -1,13 +1,23 @@
-
-import Stack from "@/components/layout/Stack/Stack";
-import Heading from "@/components/typography/Heading/Heading";
+import HeroSection from '@/components/landing/HeroSection';
+import ProblemSection from '@/components/landing/ProblemSection';
+import HowItWorksSection from '@/components/landing/HowItWorksSection';
+import AuthoritySection from '@/components/landing/AuthoritySection';
+import ValuePropSection from '@/components/landing/ValuePropSection';
+import SocialProofSection from '@/components/landing/SocialProofSection';
+import PricingSection from '@/components/landing/PricingSection';
+import CTASection from '@/components/landing/CTASection';
 
 export default async function Home() {
-    
     return (
-        <Stack gap="8">
-            <Heading type="h1">Welcome to the BrandKitPilot</Heading>
-        </Stack>
+        <>
+            <HeroSection />
+            <ProblemSection />
+            <AuthoritySection />
+            <HowItWorksSection />
+            <ValuePropSection />
+            <SocialProofSection />
+            <PricingSection />
+            <CTASection />
+        </>
     );
 }
-

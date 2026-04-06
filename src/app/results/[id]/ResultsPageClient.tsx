@@ -159,7 +159,8 @@ const ResultsPageClient = ({ brandKit: initialBrandKit }: ResultsPageClientProps
 
     return (
         <>
-            <Stack gap="8">
+            <Box className="mx-auto max-w-2xl p-4">
+                <Stack gap="8">
                 <Box>
                     <FlexBox justify="between" items="start" gap="4" className="flex-wrap">
                         <Stack gap="4">
@@ -225,6 +226,7 @@ const ResultsPageClient = ({ brandKit: initialBrandKit }: ResultsPageClientProps
                     </Card>
                 )}
             </Stack>
+            </Box>
 
             {toast.visible && (
                 <Toast

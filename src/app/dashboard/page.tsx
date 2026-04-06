@@ -20,6 +20,7 @@ const page = async () => {
     const brandKits = await getAllBrandKitsByUserId(user.id);
 
     return (
+        <Box className="mx-auto max-w-2xl p-4">
             <Stack gap="8">
                 <Heading type="h1">Dashboard</Heading>
 
@@ -85,6 +86,7 @@ const page = async () => {
                     </Stack>
                 </Box>
             </Stack>
+        </Box>
     );
 }
 

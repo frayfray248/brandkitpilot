@@ -19,13 +19,15 @@ const StartPage = async () => {
     const frameworks = await getFrameworks()
 
     return (
-        <Stack gap="8">
+        <Box className="mx-auto max-w-2xl p-4">
+            <Stack gap="8">
             <Heading type="h1">New Brand Kit</Heading>
 
             <Box bgColor='base-100' padding='6' className='rounded-lg'>
                 <NewBrandKitForm frameworks={frameworks} />
             </Box>
         </Stack>
+        </Box>
     );
 };
 

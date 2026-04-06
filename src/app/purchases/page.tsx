@@ -18,7 +18,8 @@ const PurchasesPage = async () => {
     const transactions = await getUserTokenTransactions()
 
     return (
-        <Stack gap="8">
+        <Box className="mx-auto max-w-2xl p-4">
+            <Stack gap="8">
             <Heading type="h1">Purchases</Heading>
 
             <Box bgColor='base-100' padding='6' className='rounded-lg'>
@@ -44,6 +45,7 @@ const PurchasesPage = async () => {
 
             </Box>
         </Stack>
+        </Box>
     );
 };
 

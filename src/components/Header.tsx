@@ -9,6 +9,7 @@ import Heading from '@/components/typography/Heading/Heading'
 import Text from '@/components/typography/Text/Text'
 import { SIGNOUT_REDIRECT_URL } from '@/lib/auth/const'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import React from 'react'
 
 const Header = () => {
@@ -44,9 +45,9 @@ const Header = () => {
                         <Button size='sm' onClick={handleSignout}>Sign Out</Button>
                     </Stack>
                     :
-                    <Stack direction='row' gap='4'>
-                        <Text color="primary" as="a" href="/login" >Login</Text>
-                    </Stack>}
+                    <Link href="/start">
+                        <Button variant="primary" size="sm">Create Your BrandKit</Button>
+                    </Link>}
             </FlexBox>
         </Box>
     )

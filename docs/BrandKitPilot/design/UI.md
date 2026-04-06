@@ -70,3 +70,37 @@ When a brand kit is in `PENDING` state:
 - Results automatically appear without manual refresh when generation completes
 - Failed generations display an appropriate error message
 - Error indicators help users understand when retries are occurring
+
+## Landing Page Structure
+
+The **Landing Page** (`/`) is a statically rendered (SSG) marketing page designed to convert anonymous visitors to signups. It follows StoryBrand messaging principles and consists of the following sections:
+
+### Sections
+
+1. **HeroSection** (`base-100`) - Primary hero with headline "Professional brand messaging in minutes", value proposition text, single CTA (Create Your BrandKit → `/start`), and micro-copy badge: "Takes less than 2 minutes".
+
+2. **ProblemSection** (`base-200`) - Empathy section connecting with user pain points. Headline "Sound Familiar?" with failure avoidance messaging about unclear brand messaging challenges.
+
+3. **AuthoritySection** (`base-100`) - Authority/trust section highlighting proven frameworks (StoryBrand, Brand Key, Brand Pyramid) with expert-level messaging claims.
+
+4. **HowItWorksSection** (`base-100`) - 3-step explainer with numbered cards:
+   - Step 1: Choose Your Framework
+   - Step 2: Answer Guided Questions  
+   - Step 3: Get Your Brand Kit
+   Includes micro-copy badge: "Instant results".
+
+5. **ValuePropSection** (`base-200`) - Success vision section "Walk Away With Confidence" with benefits of using the product (capture attention, build trust, convert visitors).
+
+6. **SocialProofSection** (`base-200`) - Testimonials section with 2 placeholder testimonials displaying quotes and attribution. Marked as placeholder content.
+
+7. **PricingSection** (`base-100`) - Token-based pricing section fetching real product data from Stripe. Shows benefits list and token pack prices. Links to `/checkout`.
+
+8. **CTASection** (`primary`) - Final conversion CTA with success vision messaging "Ready to Build Your Brand?" and primary button (Create Your BrandKit → `/start`).
+
+### Layout
+
+- Full-width section backgrounds with constrained inner content (`max-w-3xl` to `max-w-5xl`)
+- Alternating background colors (`base-100`, `base-200`, `primary`) for visual separation
+- Uses existing component library: Stack, Box, Card, Button, Heading, Text, Badge, FlexBox
+- Semantic HTML structure with proper heading hierarchy (h1 in Hero, h2 in other sections)
+- PricingSection is async (fetches Stripe products) while other sections are static
